@@ -2,20 +2,15 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../Components/context/AuthContext";
 
-export default function Signup() {
+export default function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
-    const passwordConfirmRef = useRef();
     const { signup } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-            return setError("Password do not match!");
-        }
 
         try {
             setError("");
@@ -35,9 +30,8 @@ export default function Signup() {
             {error}
             <input type="email" ref={emailRef} required placeholder="Email"/>
             <input type="password" ref={passwordRef} required placeholder="Password" />
-            <input type="password" ref={passwordConfirmRef} required placeholder="Confirm Password" />
-            <button disabled={loading} type="submit" onClick={handleSubmit}>Sign Up</button>
-            <Link to="/login">Log In</Link>
+            <button disabled={loading} type="submit" onClick={handleSubmit}>Log In</button>
+            <Link to="/signup">Sign Up</Link>
         </div>
     )
 }
