@@ -34,7 +34,7 @@ export default function ForgotPassword() {
             <input type="email" ref={emailRef} required placeholder="Email"/>
             <button disabled={loading} type="submit" onClick={handleSubmit}>Reset Password</button>
             <Link to="/login">Log In</Link>
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/signup/seekers">Sign Up</Link>
         </div>
     )
 }

@@ -27,14 +27,61 @@ export default function Login() {
     }
 
     return (
-        <div>
-            {/* TODO: Create a Log In Page here */}
-            {error}
-            <input type="email" ref={emailRef} required placeholder="Email"/>
-            <input type="password" ref={passwordRef} required placeholder="Password" />
-            <button disabled={loading} type="submit" onClick={handleSubmit}>Log In</button>
-            <Link to="/signup">Sign Up</Link>
-            <Link to="/forgot-password">Forgot Password</Link>
+        <div className="container register">
+            <div className="row">
+                <div className="col-md-3 register-left">
+                    <img src="/assets/images/Youth-Recruit-Logo.jpeg" alt=""></img>
+                    <h3>Youth Recruit</h3>
+                    <p>Buckle up, You are about to start your Job search Journey with Youth Recruit!</p>
+                    <h10> Don't have an account ?</h10>
+                    {/* <a href="index.html" name="login" value="Login"> <button> Sign Up </button></a> <br> */}
+                    <Link to="/signup/seekers">Sign Up</Link>
+                    <Link to="/forgot-password">Forgot Password</Link>
+                </div>
+                <div className="col-md-9 register-right">
+                    <div className="tab-content" id="myTabContent">
+                        <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h3 className="register-heading">Login to Youth Recruit</h3>
+                            <form>
+                                <div className="row register-form">
+                                    <div className="col"> </div>
+                                    <div className="col-6">
+                                        <div className="form-group">
+                                            <div className="maxl">
+                                                <label className="radio inline">
+                                                    <input type="radio" name="gender" value="male" checked="" />
+                                                    <span> Job seeker </span>
+                                                </label>
+                                                <label className="radio inline">
+                                                    <input type="radio" name="gender" value="female" />
+                                                    <span> Recruiter </span>
+                                            </label>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <input type="email" className="form-control" placeholder="Email *" ref={emailRef} id="email" required />
+                                        </div>
+                                        <div className="form-group">
+                                            <input type="password" className="form-control" placeholder="Password *" ref={passwordRef} id="pass" required />
+                                        </div>
+                                        {/* <input type="submit" className="btnLogin" value="Login" /> */}
+                                        <button className="btnLogin" disabled={loading} type="submit" onClick={handleSubmit}>Log In</button>
+                                    </div>
+                                    <div className="col"> </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        // {/* // <div>
+        // //     {error}
+        // //     <input type="email" ref={emailRef} required placeholder="Email"/>
+        // //     <input type="password" ref={passwordRef} required placeholder="Password" />
+        // //     <button disabled={loading} type="submit" onClick={handleSubmit}>Log In</button>
+        // //     <Link to="/signup/seekers">Sign Up</Link>
+        // //     <Link to="/forgot-password">Forgot Password</Link>
+        // // </div> */}
     )
 }
