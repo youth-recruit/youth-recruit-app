@@ -37,6 +37,10 @@ export default function Signup() {
 
     }
 
+    function setGender(event) {
+        
+    }
+
     return (
         <div className="container register">
             <div className="row">
@@ -70,9 +74,9 @@ export default function Signup() {
                                             <input type="password" className="form-control" placeholder="Confirm Password *" ref={passwordConfirmRef} id="JSconfirm-pass" required />
                                         </div>
                                         <div className="form-group">
-                                            <div className="maxl">
+                                            <div className="maxl" onChange={setGender}>
                                                 <label className="radio inline">
-                                                    <input type="radio" name="gender" value="male" checked="" />
+                                                    <input type="radio" name="gender" value="male"/>
                                                     <span> Male </span>
                                                 </label>
                                                 <label className="radio inline">

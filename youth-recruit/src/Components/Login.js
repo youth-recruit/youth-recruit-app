@@ -26,6 +26,10 @@ export default function Login() {
 
     }
 
+    function setStatus(event) {
+
+    }
+
     return (
         <div className="container register">
             <div className="row">
@@ -47,9 +51,9 @@ export default function Login() {
                                     <div className="col"> </div>
                                     <div className="col-6">
                                         <div className="form-group">
-                                            <div className="maxl">
+                                            <div className="maxl" onChange={setStatus}>
                                                 <label className="radio inline">
-                                                    <input type="radio" name="gender" value="male" checked="" />
+                                                    <input type="radio" name="gender" value="male" />
                                                     <span> Job seeker </span>
                                                 </label>
                                                 <label className="radio inline">
