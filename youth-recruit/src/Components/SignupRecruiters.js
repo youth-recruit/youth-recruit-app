@@ -9,6 +9,7 @@ export default function Signup() {
     const lastNameRef = useRef();
     const phoneRef = useRef();
     const companyNameRef = useRef();
+    const companyLocRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
@@ -83,11 +84,11 @@ export default function Signup() {
                                             <input type="text" className="form-control" placeholder="Company Name" ref={companyNameRef} id="company-name" required />
                                         </div>
                                         <div className="form-group">
-                                            <select className="form-control">
-                                            <option className="hidden" selected="" disabled="">Company Location</option>
-                                            <option>Dubai</option>
-                                            <option>Sharjah</option>
-                                            <option>Abu Dhabi</option>
+                                            <select className="form-control" ref={companyLocRef}>
+                                                <option className="hidden" value="No Location">Company Location</option>
+                                                <option value="Dubai">Dubai</option>
+                                                <option value="Sharjah">Sharjah</option>
+                                                <option value="Abu Dhabi">Abu Dhabi</option>
                                         </select>
                                         </div>
 

@@ -3,18 +3,21 @@ import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from "./context/AuthContext";
 import "./signup.css";
 import SignupIntro from './SignupIntro';
+import { database } from "../firebase";
 
 export default function Signup() {
     const firstNameRef = useRef();
     const lastNameRef = useRef();
     const phoneRef = useRef();
+    const questionRef = useRef();
     const answerRef = useRef();
     const emailRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
-    const { signup } = useAuth();
+    const { signup, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [userGender, setUserGender] = useState("male");
     const history = useHistory();
     
     async function handleSubmit(e) {
@@ -27,18 +30,34 @@ export default function Signup() {
         try {
             setError("");
             setLoading(true);
-            await signup(emailRef.current.value, passwordRef.current.value);
+            await signup(emailRef.current.value, passwordRef.current.value)
+                .then(userAuth => {
+                    database.collection('users').doc(userAuth.user.uid).set({
+                        first_name: firstNameRef.current.value,
+                        last_name: lastNameRef.current.value,
+                        gender: userGender,
+                        phone: phoneRef.current.value,
+                        email: emailRef.current.value,
+                        security_question: questionRef.current.value,
+                        security_answer: answerRef.current.value,
+                        recruiter_flag: false,
+                        applications: {
+                            applied: [],
+                            saved: []
+                        }
+                    })
+                })
+            // console.log(user);
             history.push("/")
         } catch {
             setError("Failed to create a account");
         }
 
         setLoading(false);
-
     }
 
     function setGender(event) {
-        
+        setUserGender(event.target.value);
     }
 
     return (
@@ -94,11 +113,11 @@ export default function Signup() {
                                             <input type="text" minLength="10" maxLength="10" name="txtEmpPhone" className="form-control" placeholder="Your Phone" ref={phoneRef} id="JSphone-number" />
                                         </div>
                                         <div className="form-group">
-                                            <select className="form-control">
-                                            <option className="hidden" selected="" disabled="">Please select your Security Question</option>
-                                            <option>What is your Birthdate?</option>
-                                            <option>What is Your old Phone Number</option>
-                                            <option>What is your Pet Name?</option>
+                                            <select className="form-control" ref={questionRef}>
+                                                <option className="hidden" value="No Question">Please select your Security Question</option>
+                                                <option value="What is your Birthdate?">What is your Birthdate?</option>
+                                                <option value="What is your Birthdate?">What is Your old Phone Number</option>
+                                                <option value="What is your Birthdate?">What is your Pet Name?</option>
                                         </select>
                                         </div>
                                         <div className="form-group">

@@ -37,12 +37,13 @@ export default function Login() {
                     <img src="/assets/images/Youth-Recruit-Logo.jpeg" alt=""></img>
                     <h3>Youth Recruit</h3>
                     <p>Buckle up, You are about to start your Job search Journey with Youth Recruit!</p>
-                    <h10> Don't have an account ?</h10>
+                    <p> Don't have an account ?</p>
                     {/* <a href="index.html" name="login" value="Login"> <button> Sign Up </button></a> <br> */}
                     <Link to="/signup/seekers">Sign Up</Link>
                     <Link to="/forgot-password">Forgot Password</Link>
                 </div>
                 <div className="col-md-9 register-right">
+                    {error}
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <h3 className="register-heading">Login to Youth Recruit</h3>
