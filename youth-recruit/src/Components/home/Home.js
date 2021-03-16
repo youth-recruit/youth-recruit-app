@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import NavigationBar from '../../Header/NavigationBar'
 import { useAuth } from "../context/AuthContext"
+import "./home.css"
 
 export default function Home() {
     const [error, setError] = useState("")
@@ -19,8 +21,9 @@ export default function Home() {
     }
     return (
         <div>
+            <NavigationBar />
             {error}
-            {currentUser && currentUser.email}
+            {currentUser && JSON.stringify(currentUser)}
             <Link to="profile">Update Profile</Link>
             <button type="link" onClick={handleLogout}>
                 Log Out
