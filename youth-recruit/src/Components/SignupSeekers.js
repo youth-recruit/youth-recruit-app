@@ -38,8 +38,10 @@ export default function Signup() {
                         gender: userGender,
                         phone: phoneRef.current.value,
                         email: emailRef.current.value,
-                        security_question: questionRef.current.value,
-                        security_answer: answerRef.current.value,
+                        security: {
+                            question: questionRef.current.value,
+                            answer: answerRef.current.value
+                        },
                         recruiter_flag: false,
                         applications: {
                             applied: [],

@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from "./context/AuthContext";
 import "./signup.css";
 import SignupIntro from './SignupIntro';
+import { database } from "../firebase";
 
 export default function Signup() {
     const firstNameRef = useRef();
@@ -28,7 +29,24 @@ export default function Signup() {
         try {
             setError("");
             setLoading(true);
-            await signup(emailRef.current.value, passwordRef.current.value);
+            await signup(emailRef.current.value, passwordRef.current.value)
+            .then(userAuth => {
+                database.collection('users').doc(userAuth.user.uid).set({
+                    first_name: firstNameRef.current.value,
+                    last_name: lastNameRef.current.value,
+                    phone: phoneRef.current.value,
+                    email: emailRef.current.value,
+                    company: {
+                        name: companyNameRef.current.value,
+                        location: companyLocRef.current.value
+                    },
+                    recruiter_flag: true,
+                    applications: {
+                        active: [],
+                        archived: []
+                    }
+                })
+            })
             history.push("/")
         } catch {
             setError("Failed to create a account");
