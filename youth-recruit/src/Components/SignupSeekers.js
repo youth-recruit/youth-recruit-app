@@ -63,11 +63,10 @@ export default function Signup() {
     }
 
     return (
-        <div className="container register">
+        <div className="register">
             <div className="row">
                 <SignupIntro />
                 <div className="col-md-9 register-right">
-                    {error}
                     <ul className="nav nav-tabs nav-justified" id="myTab" role="tablist">
                         <li className="nav-item">
                             <Link className="nav-link active" id="seekers-tab" to="/signup/seekers">Job Seeker</Link>
@@ -81,6 +80,11 @@ export default function Signup() {
                             <h3 className="register-heading">Apply as a Job Seeker</h3>
                             <form>
                                 <div className="row register-form">
+                                <div className="col-md-12">
+                                    {error && (
+                                        <div className = "error"><span>{error}</span></div>
+                                    )}
+                                    </div>
                                     <div className="col-md-6">
                                         <div className="form-group">
                                             <input type="text" className="form-control" placeholder="First Name *" ref={firstNameRef} id="JSfirst-name" required />
@@ -100,6 +104,7 @@ export default function Signup() {
                                                     <input type="radio" name="gender" value="male"/>
                                                     <span> Male </span>
                                                 </label>
+                                                <span>                 </span>
                                                 <label className="radio inline">
                                                     <input type="radio" name="gender" value="female" />
                                                     <span>Female </span>

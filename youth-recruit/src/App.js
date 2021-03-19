@@ -19,6 +19,8 @@ function App() {
             <Route path="/signup/recruiters" component={SignupRecruiters} />
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgotPassword} />
+            <Route path="/home" component={Home} />  {/*remove when done*/}
+
           </Switch>
         </AuthProvider>
       </Router>

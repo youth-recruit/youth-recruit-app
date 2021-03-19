@@ -31,32 +31,35 @@ export default function Login() {
     }
 
     return (
-        <div className="container register">
+        <div className="register">
             <div className="row">
                 <div className="col-md-3 register-left">
-                    <img src="/assets/images/Youth-Recruit-Logo.jpeg" alt=""></img>
+                    <img src="/assets/images/Youth-Recruit-Logo.png" alt=""></img>
                     <h3>Youth Recruit</h3>
                     <p>Buckle up, You are about to start your Job search Journey with Youth Recruit!</p>
                     <p> Don't have an account ?</p>
                     {/* <a href="index.html" name="login" value="Login"> <button> Sign Up </button></a> <br> */}
-                    <Link to="/signup/seekers">Sign Up</Link>
-                    <Link to="/forgot-password">Forgot Password</Link>
+                    <Link to="/signup/seekers"><button>Sign Up</button></Link>
                 </div>
                 <div className="col-md-9 register-right">
-                    {error}
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <h3 className="register-heading">Login to Youth Recruit</h3>
                             <form>
                                 <div className="row register-form">
+                                    
                                     <div className="col"> </div>
                                     <div className="col-6">
+                                    {error && (
+                                        <div className = "error"><span>{error}</span></div>
+                                    )}
                                         <div className="form-group">
                                             <div className="maxl" onChange={setStatus}>
                                                 <label className="radio inline">
                                                     <input type="radio" name="gender" value="male" />
                                                     <span> Job seeker </span>
                                                 </label>
+                                                <span>                 </span>
                                                 <label className="radio inline">
                                                     <input type="radio" name="gender" value="female" />
                                                     <span> Recruiter </span>
@@ -69,6 +72,7 @@ export default function Login() {
                                         <div className="form-group">
                                             <input type="password" className="form-control" placeholder="Password *" ref={passwordRef} id="pass" required />
                                         </div>
+                                        <Link to="/forgot-password">Forgot Password</Link>
                                         {/* <input type="submit" className="btnLogin" value="Login" /> */}
                                         <button className="btnLogin" disabled={loading} type="submit" onClick={handleSubmit}>Log In</button>
                                     </div>

@@ -1,6 +1,6 @@
 .register {
   background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-  margin-top: 3%;
+  margin-top: 1%;
   padding: 3%;
 }
 
@@ -128,4 +128,20 @@
   margin-top: 8%;
   margin-bottom: -15%;
   color: #495057;
+}
+
+.error {
+  color: #ba3939;
+  background: #ffe0e0;
+  border: 1px solid #a33a3a;
+  padding: 1%;
+  margin-bottom: 3%;
+}
+
+.success {
+  color: #2b7515;
+  background: #ecffd6;
+  border: 1px solid #617c42;
+  padding: 1%;
+  margin-bottom: 3%;
 }

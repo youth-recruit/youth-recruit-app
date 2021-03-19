@@ -28,6 +28,7 @@ export default function Home() {
             <button type="link" onClick={handleLogout}>
                 Log Out
             </button>
+            <span>Hello Nadeen</span>          
         </div>
     )
 }
