@@ -7,6 +7,7 @@ import Home from './Components/home/Home';
 import Login from './Components/Login';
 import PrivateRoute from './Components/PrivateRoute';
 import ForgotPassword from './Components/ForgotPassword';
+import Landing from './views/examples/Landing';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/home" component={Home} />  {/*remove when done*/}
+            <Route path="/home" component={Landing} />  {/*remove when done*/}
 
           </Switch>
         </AuthProvider>

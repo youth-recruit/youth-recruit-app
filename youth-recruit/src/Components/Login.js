@@ -35,7 +35,7 @@ export default function Login() {
             <div className="row">
                 <div className="col-md-3 register-left">
                     <img src="/assets/images/Youth-Recruit-Logo.png" alt=""></img>
-                    <h3>Youth Recruit</h3>
+                    <h3 className='name'><b>Youth Recruit</b></h3>
                     <p>Buckle up, You are about to start your Job search Journey with Youth Recruit!</p>
                     <p> Don't have an account ?</p>
                     {/* <a href="index.html" name="login" value="Login"> <button> Sign Up </button></a> <br> */}
