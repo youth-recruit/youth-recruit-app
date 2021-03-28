@@ -43,10 +43,10 @@ export default function CardsPanel() {
                                 <Col lg="4" key={job[0]}>
                                 <Card className="card-lift--hover shadow border-0">
                                     <CardBody className="py-5">
-                                    <h5 className="text-primary text-uppercase">
+                                    <h5 className="text-default text-uppercase">
                                         {job[1].title}
                                     </h5>
-                                    <h6 className="text-primary">
+                                    <h6 className="text-default">
                                         {job[1].company}
                                     </h6>
                                     <p className="description mt-3">

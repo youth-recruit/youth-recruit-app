@@ -25,7 +25,7 @@ function App() {
             <Route path="/new-job" component={JobPosting} />
             
             
-            {/* <Route path="/home" component={Home} />  remove when done
+             {/*<Route path="/home" component={Home} /> remove when done
             <Route path="/home" component={Landing} />  remove when done */}
 
           </Switch>

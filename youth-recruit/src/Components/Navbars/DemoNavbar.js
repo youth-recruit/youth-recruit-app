@@ -86,24 +86,27 @@ class DemoNavbar extends React.Component {
                 onExiting={this.onExiting}
                 onExited={this.onExited}
               >
+                
+                <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                 <div className="navbar-collapse-header">
-                  <Row>
-                    <Col className="collapse-brand" xs="6">
                       <Link to="www.facebook.com">
                         <img
                           alt="Youth Recruit"
                           src={require("../../assets/img/Youth-Recruit-Logo.png")}
                         />
                       </Link>
-                    </Col>
-                    <Col className="collapse-close" xs="6">
-                      <button className="navbar-toggler" id="navbar_global">
-                        <span />
-                        <span />
-                      </button>
-                    </Col>
-                  </Row>
                 </div>
+                  <NavItem>
+                      <NavLink
+                        className="nav-link-icon"
+                        href="#"
+                        id=""
+                        target="_blank"
+                      >
+                        <span className="nav-link-inner--text">Youth Recruit</span>
+                      </NavLink>
+                    </NavItem>
+                </Nav>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                   <UncontrolledDropdown nav>
                     <DropdownToggle nav>

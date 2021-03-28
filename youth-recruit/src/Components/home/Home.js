@@ -7,7 +7,13 @@ import {
     Container,
     Row,
     Col,
-    Button
+    Button,
+    Input,
+    InputGroupAddon,
+    InputGroupText,
+    InputGroup,
+    FormGroup,
+    Form,
   } from "reactstrap";
   
 // core components
@@ -97,9 +103,32 @@ export default function Home() {
                         <p className="lead text-white">
                           We will help you find part-time and full-time paid jobs at a variety of places.
                         </p>
+                        
                       </Col>
+                      
                       <Col>{isUserRecruit() && <Button><Link to="/new-job">Post Job</Link></Button>}</Col>
                     </Row>
+                    <Row>
+                      <Col md="6">
+                          <FormGroup>
+                            <InputGroup className="mb-4">
+                              <InputGroupAddon addonType="prepend">
+                                <InputGroupText>
+                                  <i className="ni ni-zoom-split-in" />
+                                </InputGroupText>
+                              </InputGroupAddon>
+                              <Input placeholder="Search for jobs" type="text" />
+                            </InputGroup>
+                          </FormGroup>
+                        </Col>
+                        <Col md="6">
+                        <FormGroup>
+                          <InputGroup>
+                          <Button><Link to="#">Search</Link></Button>
+                          </InputGroup>
+                        </FormGroup>
+                        </Col>
+                      </Row>
                   </div>
                 </Container>
                 {/* SVG separator */}
