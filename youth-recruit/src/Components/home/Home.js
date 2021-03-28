@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useAuth } from "../context/AuthContext"
 import { database } from "../../firebase";
@@ -43,6 +43,7 @@ import SearchBar from './SearchBar';
 
 export default function Home() {
     const { currentUser } = useAuth()
+    const [isRecruiter, setRecruiter] = useState(false)
     
 
     async function isUserRecruit() {
@@ -51,7 +52,7 @@ export default function Home() {
       docRef.get().then((doc) => {
         if (doc.exists) {
           // console.log("Document data:", doc.data());
-          return doc.data.recruiter_flag
+          setRecruiter(doc.data.recruiter_flag)
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -59,8 +60,6 @@ export default function Home() {
       }).catch((error) => {
         console.log("Error getting document:", error);
       });
-
-      return false;
     }
 
     return (
@@ -98,7 +97,7 @@ export default function Home() {
                           We will help you find part-time and full-time paid jobs at a variety of places.
                         </p>
                       </Col>
-                      <Col>{isUserRecruit() && <Button><Link to="/new-job">Post Job</Link></Button>}</Col>
+                      <Col>{isRecruiter && <Button><Link to="/new-job">Post Job</Link></Button>}</Col>
                     </Row>
                   </div>
                 </Container>
