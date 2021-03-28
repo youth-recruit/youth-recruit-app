@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAuth } from "../Components/context/AuthContext"
 import { useHistory } from 'react-router-dom'
-import { Button, Card, Container, Row, Col } from "reactstrap";
+import { Button, Card, Container, Row, Col, Badge} from "reactstrap";
 import DemoNavbar from "./Navbars/DemoNavbar.js";
 import SimpleFooter from "./Footers/CardsFooter.js";
 
@@ -97,6 +97,7 @@ class Profile extends React.Component {
                     <div className="mt-5 py-5 border-top text-left">
                       <Row className="justify-content-center">
                         <Col lg="9">
+                          {/*New Section */}
                           <h3>Objective</h3>
                           <p>
                           I would like to gain an internship at a multinational leading company to deepen my knowledge and gain
@@ -104,21 +105,59 @@ class Profile extends React.Component {
                           allow me to use my skills and share my ideas to help in developing the companies’ projects.
                           </p>
                           <hr></hr>
-
+                        {/*New Section */}
                           <h3>Personal Details</h3> 
-                          <p> Birthdate:    24/01/2001</p>
-                          <p> Email:     nadeentarek2001@hotmail.com</p>
-                          <p> Mobile Phone:    +97112345</p>
+                          <div> <b>Birthdate:</b>     24/01/2001</div>
+                          <div> <b>Email: </b>    nadeentarek2001@hotmail.com</div>
+                          <div> <b> Mobile Phone:</b>    +97112345</div>
                           <hr></hr>
-
+                        {/*New Section */}
                           <h3>Experience</h3>
-                          <h5>Chair - IEEE SIGHT AUS Chapter</h5>
-                          <span>From Sep 2019 To March 2021 </span>
+                          <h5 className="text-default">Chair - IEEE SIGHT AUS Chapter</h5>
+                          <p className="text-muted">From Sep 2019 To March 2021 </p>
                           <p>
                           I Hosted a deep learning workshop to create a face mask detection CNN model
                           Hosted a hardware workshop using Google AIY vision kit to create attention checker
                           Hosted 2 workshop to create a real-time emotion detection model.
                           </p>
+                          <hr></hr>
+                        {/*New Section */}
+                         <h3>Education</h3>
+                          <h5 className="text-default">American University of Sharjah</h5>
+                          <h6 className="text-default">Bachelor in Computer Engineering</h6>
+                          <p className="text-muted">From Sep 2018 To March 2022 </p>
+                          <div>
+                          <b>GPA: 3.0 </b>
+                            <br /> <b>Related Courses: </b> Computer Networks, Software Design
+                          </div>
+                          <hr></hr>
+                        {/*New Section */}
+                         <h3>Awards</h3>
+                          <h5 className="text-default">2nd Place Hults Prize Competition</h5>
+                          <p className="text-muted">From Sep 2018 To March 2022 </p>
+                          <div>
+                          Presented a venture idea to solve unemployment for 10,000 people
+                          </div>
+                          <hr></hr>
+                        {/*New Section */}
+                         <h3>Courses</h3>
+                          <h5 className="text-default">Web development Course</h5>
+                          <p className="text-muted">From Sep 2018 To present </p>
+                          <div>
+                          Web Development-Frontend and Backend-Diploma (Yat learning center)
+                          </div>
+                          <hr></hr>
+                        {/*New Section */}
+                        <h3>Languages</h3>
+                          <div className="text-muted">English - Fluent</div>
+                          <hr></hr>
+                         {/*New Section */}
+                         <h3>Skills</h3>
+                            <div>
+                            <Badge color="info" pill className="mr-1">Java</Badge>
+                            <Badge color="info" pill className="mr-1">C/C++</Badge>
+                            <Badge color="info" pill className="mr-1">Teamwork</Badge>
+                            </div>
                           <hr></hr>
                         </Col>
                       </Row>
