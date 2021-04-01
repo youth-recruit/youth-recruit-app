@@ -16,6 +16,8 @@
 
 */
 import React from "react";
+import { useAuth } from "../context/AuthContext"
+import { useHistory } from 'react-router-dom'
 import { Link } from "react-router-dom";
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
@@ -37,6 +39,20 @@ import {
   Col,
   UncontrolledTooltip
 } from "reactstrap";
+
+{/*Handels the logout*/}
+async function Signout() {
+  const { logout } = useAuth()
+  const history = useHistory()
+
+  
+      try {
+          await logout()
+          history.push("/login")
+      } catch {
+      }
+
+}
 
 class DemoNavbar extends React.Component {
   componentDidMount() {
@@ -247,9 +263,9 @@ class DemoNavbar extends React.Component {
                       <DropdownItem to="/register-page" tag={Link}>
                         Settings
                       </DropdownItem>
-                      {/* <DropdownItem to="/login-page" tag={Link}>
+                      <DropdownItem to="/login-page" tag={Signout}>
                         Logout
-                      </DropdownItem> */}
+                      </DropdownItem>
                       
                     </DropdownMenu>
                   </UncontrolledDropdown>
@@ -265,6 +281,10 @@ class DemoNavbar extends React.Component {
 }
 
 export default DemoNavbar;
+
+
+
+
 
 //                    <Button
 /*className="btn-neutral btn-icon"
