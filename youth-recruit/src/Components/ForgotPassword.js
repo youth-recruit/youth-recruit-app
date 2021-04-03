@@ -2,12 +2,16 @@ import React, { useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from "../Components/context/AuthContext";
 
+
+
+
 export default function ForgotPassword() {
     const emailRef = useRef();
     const { resetPassword } = useAuth();
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+
 
     async function handleSubmit(e) {
         e.preventDefault();
