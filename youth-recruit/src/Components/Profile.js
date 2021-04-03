@@ -106,8 +106,9 @@ export default function Profile() {
 
     const fetchAllData = async () => {
       const user = await fetchUserData()
-      console.log(user)
-      user.applications.active.map(jobID => {fetchJobData(jobID)})
+      if(user.recruiter_flag) {
+        user.applications.active.map(jobID => {fetchJobData(jobID)})
+      }
     }
 
     fetchAllData()
