@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useAuth } from "../context/AuthContext"
 import { database } from "../../firebase";
@@ -52,21 +52,41 @@ export default function Home() {
     const [isRecruiter, setRecruiter] = useState(false)
     
 
-    async function isUserRecruit() {
-      const docRef = database.collection("users").doc(currentUser.uid)
+    // async function isUserRecruit() {
+    //   const docRef = database.collection("users").doc(currentUser.uid)
+    //   docRef.get().then((doc) => {
+    //     if (doc.exists) {
+    //       // console.log("Document data:", doc.data());
+    //       // console.log(doc.data().recruiter_flag);
+    //       return doc.data().recruiter_flag
+    //     } else {
+    //         // doc.data() will be undefined in this case
+    //         console.log("No such document!");
+    //     }
+    //   }).catch((error) => {
+    //     console.log("Error getting document:", error);
+    //   });
+    //   return false
+    // }
 
-      docRef.get().then((doc) => {
+    useEffect(() => {
+      const isUserRecruit = async () => {
+        const docRef = database.collection("users").doc(currentUser.uid)
+        docRef.get().then((doc) => {
         if (doc.exists) {
           // console.log("Document data:", doc.data());
-          setRecruiter(doc.data.recruiter_flag)
+          // console.log(doc.data().recruiter_flag);
+          setRecruiter(doc.data().recruiter_flag)
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
-      }).catch((error) => {
-        console.log("Error getting document:", error);
-      });
-    }
+        }).catch((error) => {
+          console.log("Error getting document:", error);
+        });
+      }
+      isUserRecruit();
+    }, [])
 
     return (
         <div>
@@ -75,7 +95,7 @@ export default function Home() {
             {/* {currentUser && JSON.stringify(currentUser)} */}
             {/* <Link to="profile">Update Profile</Link> */}
             
-            <DemoNavbar />
+            <DemoNavbar currentUser={currentUser}/>
           <main>
             <div className="position-relative">
               {/* shape Hero */}
@@ -104,7 +124,9 @@ export default function Home() {
                         </p>
                         
                       </Col>
-                      <Col>{isRecruiter && <Button><Link to="/new-job">Post Job</Link></Button>}</Col>
+                      <Col>
+                        {isRecruiter && <Button><Link to="/new-job">Post Job</Link></Button>}
+                      </Col>
                     </Row>
                     <Row>
                       <Col md="6">

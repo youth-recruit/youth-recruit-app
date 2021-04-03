@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import { database } from "../../firebase"
 import { useAuth } from "../context/AuthContext"
@@ -10,50 +10,50 @@ export default function JobPosting() {
     // const companyRef = useRef();
     const descriptionRef = useRef();
     const tagsRef = useRef();
+    const salaryRef = useRef();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState('');
     const [companyName, setCompanyName] = useState('');
+    const [user, setUser] = useState('');
     const history = useHistory();
     const { currentUser } = useAuth()
-    getCurrentUserData()
 
-    function getCurrentUserData() {
-        const docRef = database.collection("users").doc(currentUser.uid)
-  
-        docRef.get().then((doc) => {
-          if (doc.exists) {
-            // console.log("Document data:", doc.data());
-            setCompanyName(doc.data().company.name)
-            console.log(doc.data().company.name)
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-          }
-        }).catch((error) => {
-          console.log("Error getting document:", error);
-        });
-  
-        return false;
-      }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const userRef = database.collection("users").doc(currentUser.uid)
+            const doc = await userRef.get();
+            if (doc.exists) {
+              setUser(doc.data())
+            }
+            setLoading(false)
+        }
+        fetchData()
+    }, [])
     
     function handleSubmit(e) {
         e.preventDefault();
-        
-        getCurrentUserData()
-        
 
         try {
             setError("");
             setLoading(true);
-            console.log(currentUser)
-            console.log(companyName)
             database.collection('jobs').add({
                 title: titleRef.current.value,
                 description: descriptionRef.current.value,
                 tags: tagsRef.current.value.match(/\w+/g),
-                company: companyName,
+                company: user.company.name,
                 user: currentUser.uid
             })
+            .then(job => {
+                const userRef = database.collection("users").doc(currentUser.uid);
+    
+                userRef.set({
+                    applications: {
+                        archived: [...user.applications.archived],
+                        active: [...user.applications.active, job.id]
+                    }
+                }, {merge: true})
+            }) 
             // console.log(user);
             history.push("/")
         } catch {

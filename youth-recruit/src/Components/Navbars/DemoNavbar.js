@@ -38,6 +38,8 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
+import { useAuth } from "../context/AuthContext"
+
 class DemoNavbar extends React.Component {
   componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-main"));
@@ -62,6 +64,7 @@ class DemoNavbar extends React.Component {
   };
 
   render() {
+
     return (
       <>
         <header className="header-global">
@@ -238,7 +241,7 @@ class DemoNavbar extends React.Component {
                       <span className="nav-link-inner--text">Profile</span>
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem to="/profile" tag={Link}>
+                      <DropdownItem to={`/profile/${this.props.currentUser.uid}`} tag={Link}>
                         View Profile
                       </DropdownItem>
                       <DropdownItem to="/landing-page" tag={Link}>

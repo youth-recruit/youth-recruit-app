@@ -9,6 +9,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import ForgotPassword from './Components/ForgotPassword';
 import Profile from 'Components/Profile';
 import JobPosting from 'Components/home/JobPosting';
+import EditProfile from 'Components/EditProfile';
 
 function App() {
   return (
@@ -21,8 +22,9 @@ function App() {
             <Route path="/signup/recruiters" component={SignupRecruiters} />
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            <Route path="/profile" component={Profile} />
+            <Route exact path="/profile/:userId" component={Profile} />
             <Route path="/new-job" component={JobPosting} />
+            <PrivateRoute path="/profile/:userId/edit" component={EditProfile} />
             
             
              {/*<Route path="/home" component={Home} /> remove when done

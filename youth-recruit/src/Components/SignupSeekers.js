@@ -36,6 +36,7 @@ export default function Signup() {
                         first_name: firstNameRef.current.value,
                         last_name: lastNameRef.current.value,
                         gender: userGender,
+                        age: 0,
                         phone: phoneRef.current.value,
                         email: emailRef.current.value,
                         security: {
@@ -46,7 +47,20 @@ export default function Signup() {
                         applications: {
                             applied: [],
                             saved: []
-                        }
+                        },
+                        title: "",
+                        description: "",
+                        university: "",
+                        education: [],
+                        awards: [],
+                        exeriences: [],
+                        languages: [],
+                        courses: [],
+                        location: {
+                            city: "",
+                            country: ""
+                        },
+                        skills: []
                     })
                 })
             // console.log(user);
