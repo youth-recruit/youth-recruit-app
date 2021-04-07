@@ -502,7 +502,11 @@ export default function EditProfile() {
                               </Col>
                               <Col md="3">
                                 <UncontrolledDropdown>
-                                  <DropdownToggle caret color="secondary" outline>
+                                  <DropdownToggle
+                                    caret
+                                    color="secondary"
+                                    outline
+                                  >
                                     Level
                                   </DropdownToggle>
                                   <DropdownMenu>
@@ -528,20 +532,61 @@ export default function EditProfile() {
                                       href="#pablo"
                                       onClick={(e) => e.preventDefault()}
                                     >
-                                      Mother Language
+                                      Native
                                     </DropdownItem>
                                   </DropdownMenu>
                                 </UncontrolledDropdown>
                               </Col>
+                              <Col md="3">
+                              <Button
+                                    outline
+                                    type="button"
+                                    color="info"
+                                    type="link"
+                                    size="m"
+                                  >
+                                    Add
+                                  </Button>
+                            </Col>
                             </Row>
                           </div>
                           <hr></hr>
                           {/*New Section */}
                           <h3>Skills</h3>
+                          <div>
+                           <Row>
+                              <Col md="9">
+                                <FormGroup>
+                                  <Input
+                                    id="exampleFormControlInput1"
+                                    placeholder="Add your skills"
+                                    type="text"
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col md="3">
+                              <Button
+                                    outline
+                                    type="button"
+                                    color="info"
+                                    type="link"
+                                    size="m"
+                                  >
+                                    Add
+                                  </Button>
+                              </Col>
+                           </Row>
+                          </div>
                           <div style={{ display: "flex" }}>
                             <div>
                               <Badge color="info" pill className="mr-1">
                                 c++
+                              </Badge>
+                              <Badge color="info" pill className="mr-1">
+                                Java
+                              </Badge>
+                              <Badge color="info" pill className="mr-1">
+                                Leadership
                               </Badge>
                             </div>
                           </div>
