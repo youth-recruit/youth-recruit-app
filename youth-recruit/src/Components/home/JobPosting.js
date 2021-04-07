@@ -190,6 +190,8 @@ export default function JobPosting() {
               {/* 1st Hero Variation */}
             </div>
           </main>
+          <CardsFooter />          
+
             {/*<form>
                 <input ref={titleRef} placeholder="Title"></input>
                 <textarea ref={descriptionRef} placeholder="Description"></textarea>

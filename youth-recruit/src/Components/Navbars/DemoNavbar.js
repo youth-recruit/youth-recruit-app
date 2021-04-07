@@ -15,10 +15,12 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext"
 import { useHistory } from 'react-router-dom'
 import { Link } from "react-router-dom";
+import { database } from "../../firebase";
+
 // JavaScript plugin that hides or shows a component based on your scroll
 import Headroom from "headroom.js";
 // reactstrap components
@@ -40,7 +42,9 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 
+
 class DemoNavbar extends React.Component {
+  
   componentDidMount() {
     let headroom = new Headroom(document.getElementById("navbar-main"));
     // initialise
@@ -183,6 +187,17 @@ class DemoNavbar extends React.Component {
                       <span className="nav-link-inner--text">Find Jobs</span>
                     </NavLink>
                   </NavItem>
+                  {/*<NavItem>
+                    <NavLink
+                      className="nav-link-icon"
+                      href="#"
+                      id=""
+                      target="_blank"
+                    >
+                     <i className="ni ni-ui-04 d-lg-none mr-1" />
+                      <span className="nav-link-inner--text">Post Jobs</span>
+                    </NavLink>
+                  </NavItem>*/}
                 </Nav>
                 <Nav className="align-items-lg-center ml-lg-auto" navbar>
                   <NavItem>
@@ -268,14 +283,3 @@ class DemoNavbar extends React.Component {
 }
 
 export default DemoNavbar;
-
-
-
-
-
-//                    <Button
-/*className="btn-neutral btn-icon"
-color="default"
-href="https://www.creative-tim.com/product/argon-design-system-react?ref=adsr-navbar"
-target="_blank"
->*/
