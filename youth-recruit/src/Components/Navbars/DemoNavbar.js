@@ -92,7 +92,7 @@ class DemoNavbar extends React.Component {
                 
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
                 <div className="navbar-collapse-header">
-                      <Link to="www.facebook.com">
+                      <Link to="/">
                         <img
                           alt="Youth Recruit"
                           src={require("../../assets/img/Youth-Recruit-Logo.png")}
