@@ -159,6 +159,13 @@ export default function JobInfo() {
                         versions of Lorem Ipsum.
                       </p>
                       <hr></hr>
+                      {/*New Section */}
+                      <h5>Job Tags</h5>
+                      <Badge color="info" pill className="mr-1">Java</Badge>
+                      <Badge color="info" pill className="mr-1">C++</Badge>
+                      <Badge color="info" pill className="mr-1">Leadership</Badge>
+
+                      <hr></hr>
                     </Col>
                   </Row>
                 </div>

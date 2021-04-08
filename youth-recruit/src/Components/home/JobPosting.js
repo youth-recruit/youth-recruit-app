@@ -107,7 +107,7 @@ export default function JobPosting() {
                       <Col lg="9">
                       <Card className="bg-gradient-secondary shadow">
                     <CardBody className="p-lg-5">
-                      <h4 className="mb-1">Want to Post a job with us?</h4>
+                      <h4 className="mb-1">Want to post a job with us?</h4>
                       <p className="mt-0">
                         Please enter all the details below for the job
                       </p>
