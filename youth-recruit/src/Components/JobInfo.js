@@ -83,14 +83,14 @@ export default function JobInfo() {
             <Card className="card-profile shadow mt--300">
               <div className="px-4">
                 <Row className="justify-content-center">
-                  <Col className="order-lg-2" lg="3">
-                    {/*<div className="card-profile-image">
+                  <Col className="order-lg-1" lg="3">
+                    <div className="card-profile-image py-6 mt-lg-0">
                       <img
                         alt="..."
                         className="rounded-circle"
                         src="/assets/images/Youth-Recruit-Logo.png"
                       />
-                    </div>*/}
+                    </div>
                   </Col>
                   <Col
                     className="order-lg-3 text-lg-right align-self-lg-center"
@@ -125,7 +125,7 @@ export default function JobInfo() {
                       </Link>
                     </div>
                   </Col>
-                  <Col className="order-lg-1" lg="4">
+                  <Col className="order-lg-2" lg="4">
                     {" "}
                     <div className="text-left lg-5 mt-5">
                       <h3> Software Engineering</h3> <div> Microsoft Inc.</div>
