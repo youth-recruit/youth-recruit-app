@@ -125,7 +125,7 @@ export default function Home() {
                         
                       </Col>
                       <Col>
-                        {isRecruiter && <Button><Link to="/new-job">Post Job</Link></Button>}
+                        {isRecruiter && <Link to="/new-job"><Button>Post Job</Button></Link>}
                       </Col>
                     </Row>
                     <Row>
