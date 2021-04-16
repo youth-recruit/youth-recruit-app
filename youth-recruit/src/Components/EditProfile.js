@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "Components/context/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import {
@@ -12,9 +12,6 @@ import {
   FormGroup,
   Form,
   Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
@@ -31,14 +28,63 @@ export default function EditProfile() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
+  const [userDescription, setDescription] = useState("");
+  const [userEmail, setEmail] = useState("");
+  const [userPhone, setPhone] = useState("");
+
+  const [numExperience, setNumExperience] = useState(0);
+  const [experiences, setExperiences] = useState([]);
+  const [copyExperiences, setCopyExperiences] = useState([]);
+  
+  const [numEducation, setNumEducation] = useState(0);
+  const [education, setEducation] = useState([]);
+  const [copyEducation, setCopyEducation] = useState([]);
+
+  const [numAwards, setNumAwards] = useState(0);
+  const [awards, setAwards] = useState([]);
+  const [copyAwards, setCopyAwards] = useState([]);
+
+  const [numCourses, setNumCourses] = useState(0);
+  const [courses, setCourses] = useState([]);
+  const [copyCourses, setCopyCourses] = useState([]);
+
+  const [numLanguages, setNumLanguages] = useState(0);
+  const [languages, setLanguages] = useState([]);
+  const [copyLanguages, setCopyLanguages] = useState([]);
+
+  const [skills, setSkills] = useState([]);
+
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
       const userRef = database.collection("users").doc(currentUser.uid);
       const doc = await userRef.get();
       if (doc.exists) {
-        setUser(doc.data());
+        const data = doc.data();
+        setUser(data);
+
+        setLanguages(data.languages)
+        setCopyLanguages(data.languages)
+        setNumLanguages(data.languages.length)
+
+        setCourses(data.courses)
+        setCopyCourses(data.courses)
+        setNumCourses(data.courses.length)
+
+        setExperiences(data.experiences)
+        setCopyExperiences(data.experiences)
+        setNumExperience(data.experiences.length)
+        
+        setAwards(data.awards)
+        setCopyAwards(data.awards)
+        setNumAwards(data.awards.length)
+
+        setEducation(data.education)
+        setCopyEducation(data.education)
+        setNumEducation(data.education.length)
       }
+      setLoading(false);
     };
     fetchUserData();
   }, []);
@@ -48,10 +94,87 @@ export default function EditProfile() {
       inputLinkClicked: true,
     });
   }
-  function handleSumbit() {}
+  function handleSubmit() {
+   
+    const userRef = database.collection("users").doc(currentUser.uid);
+    if (!user.recruiter_flag) {
+
+      for (let i = 0; i < copyExperiences.length; i++) {
+        let experience = copyExperiences[i]
+
+        let keys = Object.keys(experience);
+        for (let j = 0; j < keys.length; j++) {
+          if (experience[keys[j]] === "") {
+            experience[keys[j]] = experiences[i][keys[j]]
+          }
+        }
+      }
+
+      for (let i = 0; i < copyEducation.length; i++) {
+        let element = copyEducation[i]
+
+        let keys = Object.keys(element);
+        for (let j = 0; j < keys.length; j++) {
+          if (element[keys[j]] === "") {
+            element[keys[j]] = education[i][keys[j]]
+          }
+        }
+      }
+
+      for (let i = 0; i < copyAwards.length; i++) {
+        let element = copyAwards[i]
+
+        let keys = Object.keys(element);
+        for (let j = 0; j < keys.length; j++) {
+          if (element[keys[j]] === "") {
+            element[keys[j]] = awards[i][keys[j]]
+          }
+        }
+      }
+
+      for (let i = 0; i < copyCourses.length; i++) {
+        let element = copyCourses[i]
+
+        let keys = Object.keys(element);
+        for (let j = 0; j < keys.length; j++) {
+          if (element[keys[j]] === "") {
+            element[keys[j]] = courses[i][keys[j]]
+          }
+        }
+      }
+
+      for (let i = 0; i < copyLanguages.length; i++) {
+        let element = copyLanguages[i]
+
+        let keys = Object.keys(element);
+        for (let j = 0; j < keys.length; j++) {
+          if (element[keys[j]] === "") {
+            element[keys[j]] = languages[i][keys[j]]
+          }
+        }
+      }
+      
+      
+      userRef.set({
+        experiences: copyExperiences,
+        education: copyEducation,
+        awards: copyAwards,
+        courses: copyCourses,
+        languages: copyLanguages,
+        skills: skills 
+      }, {merge: true})
+    }
+
+    userRef.set({
+      description: userDescription || user.description,
+      phone: userPhone || user.phone
+  }, {merge: true})
+
+    history.push(`/profile/${currentUser.uid}`);
+  }
 
   return (
-    <div>
+    !loading && <div>
       <DemoNavbar currentUser={currentUser} />
       <main className="profile-page">
         <section className="section-profile-cover section-shaped my-0">
@@ -102,7 +225,7 @@ export default function EditProfile() {
                       <Button
                         className="float-right"
                         color="default"
-                        type="link"
+                        onClick={handleSubmit}
                         size="m"
                       >
                         Save Changes
@@ -135,18 +258,20 @@ export default function EditProfile() {
                     <Col lg="9">
                       {/*New Section */}
                       <h3>Description</h3>
+                      <p>{user.description}</p>
                       <Form>
                         <Input
                           id="exampleFormControlTextarea1"
                           placeholder="Write your career objective ..."
                           rows="3"
                           type="textarea"
+                          onChange={event => setDescription(event.target.value)}
                         />
                       </Form>
                       <hr></hr>
                       {/*New Section */}
                       <h3>Personal Details</h3>
-                      <Row>
+                      {/* <Row>
                         <Col md="3">
                           <FormGroup>
                             <b>Email: </b>
@@ -156,16 +281,19 @@ export default function EditProfile() {
                           <FormGroup>
                             <Input
                               id="exampleFormControlInput1"
-                              placeholder="name@example.com"
+                              // placeholder="name@example.com"
+                              value={user.email}
+                              onChange={event => setEmail(event.target.value)}
                               type="email"
                             />
                           </FormGroup>
                         </Col>
-                      </Row>
+                      </Row> */}
                       <Row>
                         <Col md="3">
                           <FormGroup>
                             <b>Mobile Phone: </b>
+                            <p>{user.phone}</p>
                           </FormGroup>
                         </Col>
                         <Col md="9">
@@ -173,6 +301,7 @@ export default function EditProfile() {
                             <Input
                               id="exampleFormControlInput1"
                               placeholder="(include country code) +971 000000"
+                              onChange={event => setPhone(event.target.value)}
                               type="text"
                             />
                           </FormGroup>
@@ -183,33 +312,76 @@ export default function EditProfile() {
                       {!user.recruiter_flag && (
                         <div>
                           <h3>Experience</h3>
-                          <div>
-                            <span>
-                              {" "}
-                              <b>Job title: </b>
-                            </span>
+                          {Array.apply(null, { length: numExperience }).map((e, i) => {
+                            return (
+                            <div key={i}>
+                              <span>
+                                {" "}
+                                <b>Job title: </b>
+                                <p>{experiences[i] && experiences[i].title}</p>
+                              </span>
                             <FormGroup>
                               <Input
                                 id="job1_title"
                                 placeholder="Enter job title"
                                 type="text"
+                                onChange={event => setCopyExperiences(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "title": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
+
+                                  // [...experiences[i - 1], {...experiences[i], "title": event.target.value}, ...experiences[i+1]])}
                               />
                             </FormGroup>
                             <span>
                               {"     "}
                               <b>Company Name </b>
+                              <p>{experiences[i] && experiences[i].company}</p>
                             </span>
                             <FormGroup>
                               <Input
                                 id="company_name"
                                 placeholder="Enter the company name"
                                 type="text"
+                                onChange={event => setCopyExperiences(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "company": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </FormGroup>
                             <Row>
                               <Col md="3">
                                 <FormGroup>
                                   <b>Started </b>
+                                  <p>{experiences[i] && experiences[i].start_date}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -218,12 +390,31 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="DD/MM/YYYY"
                                     type="text"
+                                    onChange={event => setCopyExperiences(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "start_date": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
                               <Col md="3">
                                 <FormGroup>
                                   <b>Ended at </b>
+                                  <p>{experiences[i] && experiences[i].end_date}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -232,6 +423,24 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="DD/MM/YYYY"
                                     type="text"
+                                    onChange={event => setCopyExperiences(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "end_date": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
@@ -256,14 +465,55 @@ export default function EditProfile() {
                               </Col>
                             </Row>
                             <b> Description </b>
+                            <p>{experiences[i] && experiences[i].description}</p>
                             <Form>
                               <Input
                                 id="exampleFormControlTextarea1"
                                 placeholder="Write the job description and achievements ..."
                                 rows="3"
                                 type="textarea"
+                                onChange={event => setCopyExperiences(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "description": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </Form>
+                           </div>)
+                           })}
+                          <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumExperience(num => {
+                                      setCopyExperiences(element => [...element, {}])
+                                      return num + 1
+                                    })}
+                                  >
+                                    Add
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
                             <div className="card-profile-actions">
                               <Row>
                                 <Col md="10"></Col>
@@ -274,44 +524,98 @@ export default function EditProfile() {
                                     color="primary"
                                     type="link"
                                     size="m"
+                                    onClick={event => setNumExperience(num => {
+
+                                      setCopyExperiences(elements => {
+
+                                        let newArray = []
+                                        for (let i = 0; i < elements.length - 1; i++) {
+                                          newArray[i] = elements[i]
+                                        }
+                                        return newArray;
+                                      })
+
+                                      return num - 1;
+                                    })}
                                   >
-                                    Add
+                                    Remove
                                   </Button>
                                 </Col>
                               </Row>
                             </div>
-                          </div>
                           <hr></hr>
 
                           {/*New Section */}
                           <h3>Education</h3>
-                          <div>
+
+                          {Array.apply(null, { length: numEducation }).map((e, i) => {
+                            return (
+                          <div key={i}>
                             <span>
                               {" "}
                               <b>University/ School Name </b>
+                              <p>{education[i] && education[i].location}</p>
                             </span>
                             <FormGroup>
                               <Input
                                 id="uni_name"
                                 placeholder="Enter University/ School Name"
                                 type="text"
+                                onChange={event => setCopyEducation(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "location": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </FormGroup>
                             <span>
                               {"     "}
                               <b>Major or Area of Study </b>
+                              <p>{education[i] && education[i].title}</p>
                             </span>
                             <FormGroup>
                               <Input
                                 id="company_name"
                                 placeholder="Enter your major or Area of Study"
                                 type="text"
+                                onChange={event => setCopyEducation(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "title": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </FormGroup>
                             <Row>
                               <Col md="3">
                                 <FormGroup>
                                   <b>Started </b>
+                                  <p>{education[i] && education[i].start_date}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -320,12 +624,31 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="DD/MM/YYYY"
                                     type="text"
+                                    onChange={event => setCopyEducation(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "start_date": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
                               <Col md="3">
                                 <FormGroup>
                                   <b>Ended (or Expected) </b>
+                                  <p>{education[i] && education[i].end_date}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -334,6 +657,24 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="DD/MM/YYYY"
                                     type="text"
+                                    onChange={event => setCopyEducation(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "end_date": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
@@ -342,6 +683,7 @@ export default function EditProfile() {
                               <Col md="3">
                                 <FormGroup>
                                   <b>GPA: </b>
+                                  <p>{education[i] && education[i].gpa}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -350,40 +692,149 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="GPA"
                                     type="text"
+                                    onChange={event => setCopyEducation(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "gpa": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
                             </Row>
-                            <b> Description </b>
+                            <b> Courses </b>
+                            <p>{education[i] && education[i].courses}</p>
                             <Form>
                               <Input
                                 id="exampleFormControlTextarea1"
-                                placeholder="Write the your educational achievements and related courses ..."
+                                placeholder="Courses (separated by commas)"
                                 rows="3"
-                                type="textarea"
+                                type="text"
+                                onChange={event => setCopyEducation(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "courses": event.target.value.match(/\w+/g)}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </Form>
-                          </div>
+                          </div>)
+                          })}
+                          <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumEducation(num => {
+                                      setCopyEducation(element => [...element, {}])
+                                      return num + 1
+                                    })}
+                                  >
+                                    Add
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
+                            <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumEducation(num => {
+
+                                      setCopyEducation(elements => {
+
+                                        let newArray = []
+                                        for (let i = 0; i < elements.length - 1; i++) {
+                                          newArray[i] = elements[i]
+                                        }
+                                        return newArray;
+                                      })
+
+                                      return num - 1;
+                                    })}
+                                  >
+                                    Remove
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
                           <hr></hr>
 
                           {/*New Section */}
                           <h3>Awards</h3>
-                          <div>
+                          {Array.apply(null, { length: numAwards }).map((e, i) => {
+                            return (
+                          <div key={i}>
                             <span>
                               {" "}
                               <b>Title of the Award </b>
+                              <p>{awards[i] && awards[i].title}</p>
                             </span>
                             <FormGroup>
                               <Input
                                 id="uni_name"
                                 placeholder="Enter title of the Award"
                                 type="text"
+                                onChange={event => setCopyAwards(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "title": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </FormGroup>
                             <Row>
                               <Col md="3">
                                 <FormGroup>
-                                  <b>Recived </b>
+                                  <b>Received </b>
+                                  <p>{awards[i] && awards[i].received}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -392,12 +843,31 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="DD/MM/YYYY"
                                     type="text"
+                                    onChange={event => setCopyAwards(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "received": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
                               <Col md="3">
                                 <FormGroup>
                                   <b>Expiration </b>
+                                  <p>{awards[i] && awards[i].expiry}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -406,42 +876,151 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="DD/MM/YYYY"
                                     type="text"
+                                    onChange={event => setCopyAwards(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "expiry": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
                             </Row>
 
                             <b> Description </b>
+                            <p>{awards[i] && awards[i].description}</p>
                             <Form>
                               <Input
                                 id="exampleFormControlTextarea1"
                                 placeholder="Write your awards and achievements regrading the award ..."
                                 rows="3"
                                 type="textarea"
+                                onChange={event => setCopyAwards(elements => {
+
+                                  let newExperiences = []
+
+                                  for (let j = 0; j < i; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+
+                                  let object = elements[i];
+                                  let newObject = {...object, "description": event.target.value}
+
+                                  newExperiences[i] = newObject;
+
+                                  for (let j = i + 1; j < elements.length; j++) {
+                                    newExperiences[j] = elements[j];
+                                  }
+                                  return newExperiences;
+                                })}
                               />
                             </Form>
-                          </div>
+                          </div> )})}
+
+                          <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumAwards(num => {
+                                      setCopyAwards(element => [...element, {}])
+                                      return num + 1
+                                    })}
+                                  >
+                                    Add
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
+                            <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumAwards(num => {
+
+                                      setCopyAwards(elements => {
+
+                                        let newArray = []
+                                        for (let i = 0; i < elements.length - 1; i++) {
+                                          newArray[i] = elements[i]
+                                        }
+                                        return newArray;
+                                      })
+
+                                      return num - 1;
+                                    })}
+                                  >
+                                    Remove
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
                           <hr></hr>
 
                           {/*New Section */}
                           <h3>Courses</h3>
-                          <div>
+                          {Array.apply(null, { length: numCourses }).map((e, i) => {
+                            return (
+                          <div key={i}>
                             <div>
                               <span>
                                 {" "}
                                 <b>Title of the Course </b>
+                                <p>{courses[i] && courses[i].title}</p>
                               </span>
                               <FormGroup>
                                 <Input
                                   id="uni_name"
                                   placeholder="Enter title of the Course"
                                   type="text"
+                                  onChange={event => setCopyCourses(elements => {
+
+                                    let newExperiences = []
+  
+                                    for (let j = 0; j < i; j++) {
+                                      newExperiences[j] = elements[j];
+                                    }
+  
+                                    let object = elements[i];
+                                    let newObject = {...object, "title": event.target.value}
+  
+                                    newExperiences[i] = newObject;
+  
+                                    for (let j = i + 1; j < elements.length; j++) {
+                                      newExperiences[j] = elements[j];
+                                    }
+                                    return newExperiences;
+                                  })}
                                 />
                               </FormGroup>
                               <Row>
                                 <Col md="3">
                                   <FormGroup>
-                                    <b>Recived </b>
+                                    <b>Start Date </b>
+                                    <p>{courses[i] && courses[i].start_date}</p>
                                   </FormGroup>
                                 </Col>
                                 <Col md="3">
@@ -450,12 +1029,31 @@ export default function EditProfile() {
                                       id="exampleFormControlInput1"
                                       placeholder="DD/MM/YYYY"
                                       type="text"
+                                      onChange={event => setCopyCourses(elements => {
+
+                                        let newExperiences = []
+      
+                                        for (let j = 0; j < i; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+      
+                                        let object = elements[i];
+                                        let newObject = {...object, "start_date": event.target.value}
+      
+                                        newExperiences[i] = newObject;
+      
+                                        for (let j = i + 1; j < elements.length; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+                                        return newExperiences;
+                                      })}
                                     />
                                   </FormGroup>
                                 </Col>
                                 <Col md="3">
                                   <FormGroup>
-                                    <b>Expiration </b>
+                                    <b>End Date </b>
+                                    <p>{courses[i] && courses[i].end_date}</p>
                                   </FormGroup>
                                 </Col>
                                 <Col md="3">
@@ -464,31 +1062,119 @@ export default function EditProfile() {
                                       id="exampleFormControlInput1"
                                       placeholder="DD/MM/YYYY"
                                       type="text"
+                                      onChange={event => setCopyCourses(elements => {
+
+                                        let newExperiences = []
+      
+                                        for (let j = 0; j < i; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+      
+                                        let object = elements[i];
+                                        let newObject = {...object, "end_date": event.target.value}
+      
+                                        newExperiences[i] = newObject;
+      
+                                        for (let j = i + 1; j < elements.length; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+                                        return newExperiences;
+                                      })}
                                     />
                                   </FormGroup>
                                 </Col>
                               </Row>
 
                               <b> Description </b>
+                              <p>{courses[i] && courses[i].description}</p>
                               <Form>
                                 <Input
                                   id="exampleFormControlTextarea1"
                                   placeholder="Write the your educational achievements and related courses ..."
                                   rows="3"
                                   type="textarea"
+                                  onChange={event => setCopyCourses(elements => {
+
+                                    let newExperiences = []
+  
+                                    for (let j = 0; j < i; j++) {
+                                      newExperiences[j] = elements[j];
+                                    }
+  
+                                    let object = elements[i];
+                                    let newObject = {...object, "description": event.target.value}
+  
+                                    newExperiences[i] = newObject;
+  
+                                    for (let j = i + 1; j < elements.length; j++) {
+                                      newExperiences[j] = elements[j];
+                                    }
+                                    return newExperiences;
+                                  })}
                                 />
                               </Form>
                             </div>
-                          </div>
+                          </div>)})}
+                          <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumCourses(num => {
+                                      setCopyCourses(element => [...element, {}])
+                                      return num + 1
+                                    })}
+                                  >
+                                    Add
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
+                            <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="primary"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumCourses(num => {
 
+                                      setCopyCourses(elements => {
+
+                                        let newArray = []
+                                        for (let i = 0; i < elements.length - 1; i++) {
+                                          newArray[i] = elements[i]
+                                        }
+                                        return newArray;
+                                      })
+
+                                      return num - 1;
+                                    })}
+                                  >
+                                    Remove
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
                           <hr></hr>
                           {/*New Section */}
                           <h3>Languages</h3>
-                          <div>
+                          {Array.apply(null, { length: numLanguages }).map((e, i) => {
+                            return ( 
+                          <div key={i}>
                             <Row>
                               <Col md="3">
                                 <FormGroup>
                                   <b>langauage </b>
+                                  <p>{languages[i] && languages[i].language} - {languages[i] && languages[i].fluency}</p>
                                 </FormGroup>
                               </Col>
                               <Col md="3">
@@ -497,6 +1183,24 @@ export default function EditProfile() {
                                     id="exampleFormControlInput1"
                                     placeholder="Language"
                                     type="text"
+                                    onChange={event => setCopyLanguages(elements => {
+
+                                      let newExperiences = []
+    
+                                      for (let j = 0; j < i; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+    
+                                      let object = elements[i];
+                                      let newObject = {...object, "language": event.target.value}
+    
+                                      newExperiences[i] = newObject;
+    
+                                      for (let j = i + 1; j < elements.length; j++) {
+                                        newExperiences[j] = elements[j];
+                                      }
+                                      return newExperiences;
+                                    })}
                                   />
                                 </FormGroup>
                               </Col>
@@ -512,59 +1216,174 @@ export default function EditProfile() {
                                   <DropdownMenu>
                                     <DropdownItem
                                       href="#pablo"
-                                      onClick={(e) => e.preventDefault()}
+                                      onClick={event => setCopyLanguages(elements => {
+
+                                        let newExperiences = []
+      
+                                        for (let j = 0; j < i; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+      
+                                        let object = elements[i];
+                                        let newObject = {...object, "fluency": "Beginner"}
+      
+                                        newExperiences[i] = newObject;
+      
+                                        for (let j = i + 1; j < elements.length; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+                                        return newExperiences;
+                                      })}
                                     >
                                       Beginner
                                     </DropdownItem>
                                     <DropdownItem
                                       href="#pablo"
-                                      onClick={(e) => e.preventDefault()}
+                                      onClick={event => setCopyLanguages(elements => {
+
+                                        let newExperiences = []
+      
+                                        for (let j = 0; j < i; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+      
+                                        let object = elements[i];
+                                        let newObject = {...object, "fluency": "Intermediate"}
+      
+                                        newExperiences[i] = newObject;
+      
+                                        for (let j = i + 1; j < elements.length; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+                                        return newExperiences;
+                                      })}
                                     >
-                                      Intermeidate
+                                      Intermediate
                                     </DropdownItem>
                                     <DropdownItem
                                       href="#pablo"
-                                      onClick={(e) => e.preventDefault()}
+                                      onClick={event => setCopyLanguages(elements => {
+
+                                        let newExperiences = []
+      
+                                        for (let j = 0; j < i; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+      
+                                        let object = elements[i];
+                                        let newObject = {...object, "fluency": "Fluent"}
+      
+                                        newExperiences[i] = newObject;
+      
+                                        for (let j = i + 1; j < elements.length; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+                                        return newExperiences;
+                                      })}
                                     >
                                       Fluent
                                     </DropdownItem>
                                     <DropdownItem
                                       href="#pablo"
-                                      onClick={(e) => e.preventDefault()}
+                                      onClick={event => setCopyLanguages(elements => {
+
+                                        let newExperiences = []
+      
+                                        for (let j = 0; j < i; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+      
+                                        let object = elements[i];
+                                        let newObject = {...object, "fluency": "Native"}
+      
+                                        newExperiences[i] = newObject;
+      
+                                        for (let j = i + 1; j < elements.length; j++) {
+                                          newExperiences[j] = elements[j];
+                                        }
+                                        return newExperiences;
+                                      })}
                                     >
                                       Native
                                     </DropdownItem>
                                   </DropdownMenu>
                                 </UncontrolledDropdown>
                               </Col>
-                              <Col md="3">
-                              <Button
+                            </Row>
+                          </div>
+                          )})}
+                          <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
                                     outline
                                     type="button"
                                     color="info"
                                     type="link"
                                     size="m"
+                                    onClick={event => setNumLanguages(num => {
+                                      setCopyLanguages(element => [...element, {}])
+                                      return num + 1
+                                    })}
                                   >
                                     Add
                                   </Button>
-                            </Col>
-                            </Row>
-                          </div>
+                                </Col>
+                              </Row>
+                            </div>
+                            <div className="card-profile-actions">
+                              <Row>
+                                <Col md="10"></Col>
+                                <Col md="2">
+                                  <Button
+                                    outline
+                                    type="button"
+                                    color="info"
+                                    type="link"
+                                    size="m"
+                                    onClick={event => setNumLanguages(num => {
+
+                                      setCopyLanguages(elements => {
+
+                                        let newArray = []
+                                        for (let i = 0; i < elements.length - 1; i++) {
+                                          newArray[i] = elements[i]
+                                        }
+                                        return newArray;
+                                      })
+
+                                      return num - 1;
+                                    })}
+                                  >
+                                    Remove
+                                  </Button>
+                                </Col>
+                              </Row>
+                            </div>
                           <hr></hr>
                           {/*New Section */}
                           <h3>Skills</h3>
+                          {user.skills.map(skill => {
+                            return (
+                              <Badge key={skill} color="info" pill className="mr-1">
+                                {skill}
+                              </Badge>
+                            )
+                          })}
                           <div>
                            <Row>
                               <Col md="9">
                                 <FormGroup>
                                   <Input
                                     id="exampleFormControlInput1"
-                                    placeholder="Add your skills"
+                                    placeholder="Add your skills (separated by commas)"
                                     type="text"
+                                    onChange={event => setSkills(event.target.value.match(/\w+/g))}
                                   />
                                 </FormGroup>
                               </Col>
-                              <Col md="3">
+                              {/* <Col md="3">
                               <Button
                                     outline
                                     type="button"
@@ -574,10 +1393,10 @@ export default function EditProfile() {
                                   >
                                     Add
                                   </Button>
-                              </Col>
+                              </Col> */}
                            </Row>
                           </div>
-                          <div style={{ display: "flex" }}>
+                          {/* <div style={{ display: "flex" }}>
                             <div>
                               <Badge color="info" pill className="mr-1">
                                 c++
@@ -589,11 +1408,10 @@ export default function EditProfile() {
                                 Leadership
                               </Badge>
                             </div>
-                          </div>
+                          </div> */}
                           <hr></hr>
                         </div>
                       )}
-                      {/* {console.log(jobs)} */}
                       <div style={{ display: "flex" }}>
                         {user.recruiter_flag &&
                           jobs.map((job) => (

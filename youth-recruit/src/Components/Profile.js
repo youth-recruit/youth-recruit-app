@@ -225,12 +225,12 @@ export default function Profile() {
                     {/*New Section */}
                     {!user.recruiter_flag && <div>
                       <h3>Experience</h3>
-                      {user.exeriences.map(exerience => (
-                        <div key={exerience}>
-                          <h5 className="text-default">{exerience.title}</h5>
-                          <p>{exerience.company}</p>
-                          <p className="text-muted">From {exerience.start_date} To {exerience.end_date} </p>
-                          <p> {exerience.description} </p>
+                      {user.experiences.map(experience => (
+                        <div key={experience}>
+                          <h5 className="text-default">{experience.title}</h5>
+                          <p>{experience.company}</p>
+                          <p className="text-muted">From {experience.start_date} To {experience.end_date} </p>
+                          <p> {experience.description} </p>
                         </div>
                       ))}
                       <hr></hr>
@@ -257,7 +257,7 @@ export default function Profile() {
                         {user.awards.map(award => (
                           <div key={award}>
                             <h5 className="text-default">{award.title}</h5>
-                            <p className="text-muted">From {award.start_date} To {award.end_date} </p>
+                            <p className="text-muted">From {award.received} To {award.expiry} </p>
                             <div>
                             {award.description}
                             </div>
@@ -283,7 +283,7 @@ export default function Profile() {
                         {user.languages.map(lang => (
                           <div key={lang}>
 
-                            <div className="text-muted">{lang}</div>
+                            <div className="text-muted">{lang.language} - {lang.fluency}</div>
                           </div>
                         ))}
                       <hr></hr>

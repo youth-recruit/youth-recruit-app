@@ -28,7 +28,7 @@ function App() {
             <Route path="/new-job" component={JobPosting} />
             <PrivateRoute path="/profile/:userId/edit" component={EditProfile} />
             {/*add appropriate path for jobInfo and about us*/}
-            <Route path = "/job-info" component = {JobInfo}/>
+            <Route path = "/:jobId" component = {JobInfo}/>
             <Route path ='/about-us' component = {AboutUs}/>
              {/*<Route path="/home" component={Home} /> remove when done
             <Route path="/home" component={Landing} />  remove when done */}
