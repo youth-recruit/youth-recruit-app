@@ -25,6 +25,7 @@ import CardsFooter from "./Footers/CardsFooter.js";
 export default function JobInfo() {
   const { currentUser } = useAuth();
   const [isRecruiter, setRecruiter] = useState(false);
+  const [job, setJob] = useState({})
 
   useEffect(() => {
     const isUserRecruit = async () => {
@@ -45,7 +46,19 @@ export default function JobInfo() {
           console.log("Error getting document:", error);
         });
     };
+
+    const fetchJob = async () => {
+      const id = window.location.pathname
+      // console.log(id.substr(1))
+      const docRef = database.collection("jobs").doc(id);
+      const doc = await docRef.get();
+            if (doc.exists) {
+              setJob(doc.data())
+            }
+    }
+
     isUserRecruit();
+    fetchJob()
   }, []);
 
   return (
@@ -97,7 +110,7 @@ export default function JobInfo() {
                     lg="4"
                   >
                     <div className="card-profile-actions py-4 mt-lg-0">
-                      <Link to={`#`}>
+                    {!isRecruiter && <Link to={`#`}>
                         <Button
                           className="float-right btn-icon"
                           color="default"
@@ -109,8 +122,8 @@ export default function JobInfo() {
                           </span>
                           <span className="btn-inner--text">Apply</span>
                         </Button>
-                      </Link>
-                      <Link to={`#`}>
+                      </Link>}
+                      {!isRecruiter && <Link to={`#`}>
                         <Button
                           className="float-left btn-icon"
                           size="m"
@@ -122,15 +135,16 @@ export default function JobInfo() {
                           </span>
                           <span className="btn-inner--text">Save</span>
                         </Button>
-                      </Link>
+                      </Link>}
                     </div>
                   </Col>
                   <Col className="order-lg-2" lg="4">
                     {" "}
                     <div className="text-left lg-5 mt-5">
-                      <h3> Software Engineering</h3> <div> Microsoft Inc.</div>
-                      <div> Dubai, UAE</div>
-                      <div> microsoft@internship.com</div>
+                      <h3> {job.title}</h3> <div> {job.company}</div>
+                      {/* <div> Dubai, UAE</div> */}
+                      {/* <div> microsoft@internship.com</div> */}
+                      <Link to={`/profile/${job.user}`}>View Company</Link>
                     </div>{" "}
                   </Col>
                 </Row>
@@ -146,24 +160,18 @@ export default function JobInfo() {
                       {/*New Section */}
                       <h5>Job Requirment</h5>
                       <p>
-                        s simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard
-                        dummy text ever since the 1500s, when an unknown printer
-                        took a galley of type and scrambled it to make a type
-                        specimen book. It has survived not only five centuries,
-                        but also the leap into electronic typesetting, remaining
-                        essentially unchanged. It was popularised in the 1960s
-                        with the release of Letraset sheets containing Lorem
-                        Ipsum passages, and more recently with desktop
-                        publishing software like Aldus PageMaker including
-                        versions of Lorem Ipsum.
+                        {job.description}
                       </p>
                       <hr></hr>
                       {/*New Section */}
                       <h5>Job Tags</h5>
-                      <Badge color="info" pill className="mr-1">Java</Badge>
-                      <Badge color="info" pill className="mr-1">C++</Badge>
-                      <Badge color="info" pill className="mr-1">Leadership</Badge>
+                      <div className={{display: "flex"}}>
+                      {job.tags && job.tags.map(tag => {
+                        return (
+                          <Badge key={tag} color="info" pill className="mr-1">{tag}</Badge>
+                        )
+                      })}
+                      </div>
 
                       <hr></hr>
                     </Col>

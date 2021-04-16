@@ -85,8 +85,10 @@ export default function Profile() {
   
   useEffect(() => {
 
+    console.log(window.location.pathname.substr(9))
+
     const fetchUserData = async () => {
-      const userRef = database.collection("users").doc(currentUser.uid)
+      const userRef = database.collection("users").doc(window.location.pathname.substr(9))
       const doc = await userRef.get();
       if (doc.exists) {
         setUser(doc.data())
