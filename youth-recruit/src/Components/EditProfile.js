@@ -89,6 +89,11 @@ export default function EditProfile() {
     fetchUserData();
   }, []);
 
+  function onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
   function handleAddSecondInput() {
     this.setState({
       inputLinkClicked: true,
@@ -271,7 +276,7 @@ export default function EditProfile() {
                       <hr></hr>
                       {/*New Section */}
                       <h3>Personal Details</h3>
-                      {/* <Row>
+                       <Row>
                         <Col md="3">
                           <FormGroup>
                             <b>Email: </b>
@@ -282,13 +287,14 @@ export default function EditProfile() {
                             <Input
                               id="exampleFormControlInput1"
                               // placeholder="name@example.com"
+                              disabled
                               value={user.email}
                               onChange={event => setEmail(event.target.value)}
                               type="email"
                             />
                           </FormGroup>
                         </Col>
-                      </Row> */}
+                      </Row>
                       <Row>
                         <Col md="3">
                           <FormGroup>
@@ -496,7 +502,7 @@ export default function EditProfile() {
                            })}
                           <div className="card-profile-actions">
                               <Row>
-                                <Col md="10"></Col>
+                                <Col md="8"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -512,11 +518,6 @@ export default function EditProfile() {
                                     Add
                                   </Button>
                                 </Col>
-                              </Row>
-                            </div>
-                            <div className="card-profile-actions">
-                              <Row>
-                                <Col md="10"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -746,7 +747,7 @@ export default function EditProfile() {
                           })}
                           <div className="card-profile-actions">
                               <Row>
-                                <Col md="10"></Col>
+                                <Col md="8"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -762,11 +763,6 @@ export default function EditProfile() {
                                     Add
                                   </Button>
                                 </Col>
-                              </Row>
-                            </div>
-                            <div className="card-profile-actions">
-                              <Row>
-                                <Col md="10"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -793,6 +789,7 @@ export default function EditProfile() {
                                 </Col>
                               </Row>
                             </div>
+                          
                           <hr></hr>
 
                           {/*New Section */}
@@ -931,7 +928,7 @@ export default function EditProfile() {
 
                           <div className="card-profile-actions">
                               <Row>
-                                <Col md="10"></Col>
+                                <Col md="8"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -947,11 +944,6 @@ export default function EditProfile() {
                                     Add
                                   </Button>
                                 </Col>
-                              </Row>
-                            </div>
-                            <div className="card-profile-actions">
-                              <Row>
-                                <Col md="10"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -1117,7 +1109,7 @@ export default function EditProfile() {
                           </div>)})}
                           <div className="card-profile-actions">
                               <Row>
-                                <Col md="10"></Col>
+                                <Col md="8"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -1133,11 +1125,6 @@ export default function EditProfile() {
                                     Add
                                   </Button>
                                 </Col>
-                              </Row>
-                            </div>
-                            <div className="card-profile-actions">
-                              <Row>
-                                <Col md="10"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
@@ -1314,12 +1301,12 @@ export default function EditProfile() {
                           )})}
                           <div className="card-profile-actions">
                               <Row>
-                                <Col md="10"></Col>
+                                <Col md="8"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
                                     type="button"
-                                    color="info"
+                                    color="primary"
                                     type="link"
                                     size="m"
                                     onClick={event => setNumLanguages(num => {
@@ -1330,16 +1317,11 @@ export default function EditProfile() {
                                     Add
                                   </Button>
                                 </Col>
-                              </Row>
-                            </div>
-                            <div className="card-profile-actions">
-                              <Row>
-                                <Col md="10"></Col>
                                 <Col md="2">
                                   <Button
                                     outline
                                     type="button"
-                                    color="info"
+                                    color="primary"
                                     type="link"
                                     size="m"
                                     onClick={event => setNumLanguages(num => {
