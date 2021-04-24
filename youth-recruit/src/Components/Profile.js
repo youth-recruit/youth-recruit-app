@@ -177,15 +177,12 @@ export default function Profile() {
                 <div className="mt-5 py-5 border-top text-left">
                   <Row className="justify-content-center">
                     <Col lg="9">
-                      <div>
-                        {/* <h3>Resume</h3>
-                        <form onSubmit={downloadCV}>
-                          <button type="submit">Download Resume</button>
-                        </form> */}
-                        {!user.recruiter_flag && <a href={CVURL} target="_blank"><Button color="default" type="link">Download Resume</Button></a>}
-
-                        <hr></hr>
-                      </div>
+                        {!user.recruiter_flag && (
+                          <div>
+                            <a href={CVURL} target="_blank"><Button color="default" type="link">Download Resume</Button></a>
+                            <hr></hr>
+                          </div>
+                        )}
                       {/*New Section */}
                       <h3>Description</h3>
                         <p>

@@ -65,25 +65,27 @@ export default function EditProfile() {
         const data = doc.data();
         setUser(data);
 
-        setLanguages(data.languages)
-        setCopyLanguages(data.languages)
-        setNumLanguages(data.languages.length)
+        if (!data.recruiter_flag) {
+          setLanguages(data.languages)
+          setCopyLanguages(data.languages)
+          setNumLanguages(data.languages.length)
 
-        setCourses(data.courses)
-        setCopyCourses(data.courses)
-        setNumCourses(data.courses.length)
+          setCourses(data.courses)
+          setCopyCourses(data.courses)
+          setNumCourses(data.courses.length)
 
-        setExperiences(data.experiences)
-        setCopyExperiences(data.experiences)
-        setNumExperience(data.experiences.length)
-        
-        setAwards(data.awards)
-        setCopyAwards(data.awards)
-        setNumAwards(data.awards.length)
+          setExperiences(data.experiences)
+          setCopyExperiences(data.experiences)
+          setNumExperience(data.experiences.length)
+          
+          setAwards(data.awards)
+          setCopyAwards(data.awards)
+          setNumAwards(data.awards.length)
 
-        setEducation(data.education)
-        setCopyEducation(data.education)
-        setNumEducation(data.education.length)
+          setEducation(data.education)
+          setCopyEducation(data.education)
+          setNumEducation(data.education.length)
+        }
       }
       setLoading(false);
     };
@@ -293,14 +295,19 @@ export default function EditProfile() {
                 <div className="mt-5 py-5 border-top text-left">
                   <Row className="justify-content-center">
                     <Col lg="9">
-                      <div>
-                        <h3>Resume</h3>
-                        <form>
-                          <input type="file" onChange={fileChangeHandler}/>
-                          {/* <button type="submit" >Submit</button> */}
-                        </form>
-                        <hr></hr>
-                      </div>
+                        
+                        {!user.recruiter_flag && (
+                          <div>
+                            <h3>Resume</h3>
+                            <form>
+                              <input type="file" onChange={fileChangeHandler}/>
+                            </form>
+                            <hr></hr>
+                          </div>
+                          
+                        )}
+
+                        
                       {/*New Section */}
                       <h3>Description</h3>
                       <p>{user.description}</p>
