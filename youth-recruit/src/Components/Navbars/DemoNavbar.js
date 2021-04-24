@@ -79,7 +79,7 @@ class DemoNavbar extends React.Component {
           >
             <Container>
               <NavbarBrand className="mlg-5" to="/" tag={Link}>
-                <img style={{width: "4.5rem", height: "4.5rem", marginRight: "1rem"}}
+                <img style={{width: "3rem", height: "3rem", marginRight: "1rem"}}
                   src="/assets/images/Youth-Recruit-Logo.png"
                 />
               </NavbarBrand>
@@ -259,7 +259,7 @@ class DemoNavbar extends React.Component {
                       <DropdownItem to={`/profile/${this.props.currentUser.uid}`} tag={Link}>
                         View Profile
                       </DropdownItem>
-                      <DropdownItem to="/landing-page" tag={Link}>
+                      <DropdownItem to={`profile/${this.props.currentUser.uid}/my-applications`} tag={Link}>
                         My Applicaitons
                       </DropdownItem>
                       <DropdownItem to="/register-page" tag={Link}>

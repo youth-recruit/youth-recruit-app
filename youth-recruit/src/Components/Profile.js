@@ -132,7 +132,7 @@ export default function Profile() {
                 <Row className="justify-content-center">
                   <Col className="order-lg-2" lg="3">
                     <div className="card-profile-image">
-                        <img
+                        <img style={{width: "15rem"}}
                           alt="..."
                           className="rounded-circle"
                           src="/assets/images/Youth-Recruit-Logo.png"
@@ -177,7 +177,7 @@ export default function Profile() {
                 <div className="mt-5 py-5 border-top text-left">
                   <Row className="justify-content-center">
                     <Col lg="9">
-                        {!user.recruiter_flag && (
+                        {!user.recruiter_flag && CVURL && (
                           <div>
                             <a href={CVURL} target="_blank"><Button color="default" type="link">Download Resume</Button></a>
                             <hr></hr>
