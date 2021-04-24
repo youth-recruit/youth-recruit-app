@@ -182,7 +182,7 @@ export default function Profile() {
                         <form onSubmit={downloadCV}>
                           <button type="submit">Download Resume</button>
                         </form> */}
-                        {!user.recruiter_flag && <a href={CVURL} target="_blank">Download Resume</a>}
+                        {!user.recruiter_flag && <a href={CVURL} target="_blank"><Button color="default" type="link">Download Resume</Button></a>}
 
                         <hr></hr>
                       </div>
