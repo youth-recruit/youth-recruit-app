@@ -18,7 +18,7 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import SimpleFooter from "./Footers/CardsFooter.js";
-import { database } from "../firebase";
+import { database, storage } from "../firebase";
 import DemoNavbar from "./Navbars/DemoNavbar";
 
 export default function EditProfile() {
@@ -53,7 +53,8 @@ export default function EditProfile() {
   const [copyLanguages, setCopyLanguages] = useState([]);
 
   const [skills, setSkills] = useState([]);
-
+  const [CVFile, setCVFile] = useState({});
+  const [isThereFile, setIsThereFile] = useState(false)
   
 
   useEffect(() => {
@@ -103,6 +104,20 @@ export default function EditProfile() {
    
     const userRef = database.collection("users").doc(currentUser.uid);
     if (!user.recruiter_flag) {
+
+      // if (CVFile) {
+        if (isThereFile) {
+          const storageRef = storage.ref()
+          const fileRef = storageRef.child(`${currentUser.uid}/CV/${CVFile.name}`)
+          fileRef.put(CVFile).then(() => {
+            userRef.set({
+              CV: `${currentUser.uid}/CV/${CVFile.name}`
+            }, {merge: true})
+          })
+        }
+      // }
+
+      gs://youth-recruit-2bb4d.appspot.com/agv7LKvezfPRTNIPdWqGwV02GiC2/CV/w05DecreaseConquer.pdf
 
       for (let i = 0; i < copyExperiences.length; i++) {
         let experience = copyExperiences[i]
@@ -166,7 +181,7 @@ export default function EditProfile() {
         awards: copyAwards,
         courses: copyCourses,
         languages: copyLanguages,
-        skills: skills 
+        skills: skills,
       }, {merge: true})
     }
 
@@ -176,6 +191,23 @@ export default function EditProfile() {
   }, {merge: true})
 
     history.push(`/profile/${currentUser.uid}`);
+  }
+
+  const fileChangeHandler = (event) => {
+    const file = event.target.files[0]
+    setCVFile(file)
+    setIsThereFile(true)
+    // console.log(file)
+  }
+
+  const CVFileSubmitHandler = (event) => {
+    event.preventDefault();
+    console.log(CVFile.name);
+    const storageRef = storage.ref()
+    const fileRef = storageRef.child(CVFile.name)
+    fileRef.put(CVFile).then(() => {
+      console.log("Uploaded a file")
+    })
   }
 
   return (
@@ -261,6 +293,14 @@ export default function EditProfile() {
                 <div className="mt-5 py-5 border-top text-left">
                   <Row className="justify-content-center">
                     <Col lg="9">
+                      <div>
+                        <h3>Resume</h3>
+                        <form>
+                          <input type="file" onChange={fileChangeHandler}/>
+                          {/* <button type="submit" >Submit</button> */}
+                        </form>
+                        <hr></hr>
+                      </div>
                       {/*New Section */}
                       <h3>Description</h3>
                       <p>{user.description}</p>

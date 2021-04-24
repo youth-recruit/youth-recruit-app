@@ -60,7 +60,8 @@ export default function Signup() {
                             city: "",
                             country: ""
                         },
-                        skills: []
+                        skills: [],
+                        CV: ""
                     })
                 })
             // console.log(user);

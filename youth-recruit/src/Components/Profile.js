@@ -4,34 +4,8 @@ import { Link, useHistory } from 'react-router-dom'
 import { Button, Card, CardBody, Container, Row, Col, Badge} from "reactstrap";
 import DemoNavbar from "./Navbars/DemoNavbar.js";
 import SimpleFooter from "./Footers/CardsFooter.js";
-import { database } from "../firebase";
+import { database, storage } from "../firebase";
 
-// import {
-//   Badge,
-//   Button,
-//   Card,
-//   CardBody,
-//   Container,
-//   Row,
-//   Col
-// } from "reactstrap";
-
-// class Profile extends React.Component {
-//     componentDidMount() {
-//       document.documentElement.scrollTop = 0;
-//       document.scrollingElement.scrollTop = 0;
-//       this.refs.main.scrollTop = 0;
-//     }
-//     render() {
-//       return (
-//         <>
-          
-//         </>
-//       );
-//     }
-//   }
-  
-//   export default Profile;
 
 export default function Profile() {
   const { currentUser, logout } = useAuth()
@@ -39,6 +13,7 @@ export default function Profile() {
   const [ isSameUser, setIsSameUser ] = useState(false)
   const [ jobs, setJobs ] = useState([])
   const [ loading, setLoading ] = useState(true)
+  const [ CVURL, setCVURL ] = useState("")
   const history = useHistory()
 
   async function handleLogout() {
@@ -49,43 +24,10 @@ export default function Profile() {
     } catch {
     }
   }
-
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     const userRef = database.collection("users").doc(currentUser.uid)
-  //     const doc = await userRef.get();
-  //     if (doc.exists) {
-  //       const data = doc.data()
-  //       setUser(data)
-  //       console.log(user)
-  //       // data.applications.active.map(jobID => {fetchJobData(jobID)})
-  //     setLoading(false)
-  //     }
-  //       // const data = await database.collection('users').get(currentUser.uid)
-  //       // setUser(data.docs.map(doc => [doc.id, doc.data()]))
-  //   }
-    
-  //   fetchUserData()
-  //   
-    
-  // }, [])
-
-  // useEffect(() => {
-  //   const fetchJobData = async (id) => {
-  //     console.log(jobs)
-  //     const jobRef = database.collection("jobs").doc(id)
-  //     const doc = await jobRef.get();
-  //     if (doc.exists) {
-  //       setJobs([...jobs, doc.data()])
-  //     }
-  //   }
-  //   console.log(user)
-  //   user.applications.active.map(jobID => {fetchJobData(jobID)}) 
-  // }, [user])
+  
+  
   
   useEffect(() => {
-
-    console.log(window.location.pathname.substr(9))
 
     const fetchUserData = async () => {
       const userRef = database.collection("users").doc(window.location.pathname.substr(9))
@@ -110,6 +52,14 @@ export default function Profile() {
       const user = await fetchUserData()
       if(user.recruiter_flag) {
         user.applications.active.map(jobID => {fetchJobData(jobID)})
+      } else {
+        const storageRef = storage.ref()
+        storageRef.child(`${user.CV}`).getDownloadURL()
+        .then((response) => {
+          console.log(response)
+          // setCVURL(response)
+          setCVURL(response)
+        })
       }
     }
 
@@ -120,6 +70,23 @@ export default function Profile() {
     }
 
   }, [])
+
+  // const downloadCV = (event) => {
+  //   event.preventDefault()
+  //   console.log("Here")
+  //   const storageRef = storage.ref()
+  //   storageRef.child(`agv7LKvezfPRTNIPdWqGwV02GiC2/CV/OpenDSA Faster Computer, or Faster Algorithm.pdf`).getDownloadURL()
+  //   .then((url) => {
+  //     console.log(url)
+  //     var  xhr = new XMLHttpRequest()
+  //     xhr.responseType = 'blob'
+  //     xhr.onload = (event) => {
+  //       var  blob = xhr.response
+  //     };
+  //     xhr.open('GET', url)
+  //     xhr.send()
+  //   })
+  // }
 
   
   return (
@@ -210,6 +177,15 @@ export default function Profile() {
                 <div className="mt-5 py-5 border-top text-left">
                   <Row className="justify-content-center">
                     <Col lg="9">
+                      <div>
+                        {/* <h3>Resume</h3>
+                        <form onSubmit={downloadCV}>
+                          <button type="submit">Download Resume</button>
+                        </form> */}
+                        {!user.recruiter_flag && <a href={CVURL} target="_blank">Download Resume</a>}
+
+                        <hr></hr>
+                      </div>
                       {/*New Section */}
                       <h3>Description</h3>
                         <p>
