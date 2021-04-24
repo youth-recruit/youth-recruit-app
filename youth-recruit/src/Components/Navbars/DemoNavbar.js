@@ -78,8 +78,8 @@ class DemoNavbar extends React.Component {
             id="navbar-main"
           >
             <Container>
-              <NavbarBrand className="mr-lg-5" to="/" tag={Link}>
-                <img
+              <NavbarBrand className="mlg-5" to="/" tag={Link}>
+                <img style={{width: "4.5rem", height: "4.5rem", marginRight: "1rem"}}
                   src="/assets/images/Youth-Recruit-Logo.png"
                 />
               </NavbarBrand>
