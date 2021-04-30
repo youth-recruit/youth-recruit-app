@@ -259,7 +259,7 @@ class DemoNavbar extends React.Component {
                       <DropdownItem to={`/profile/${this.props.currentUser.uid}`} tag={Link}>
                         View Profile
                       </DropdownItem>
-                      <DropdownItem to={`profile/${this.props.currentUser.uid}/my-applications`} tag={Link}>
+                      <DropdownItem to={`/profile/${this.props.currentUser.uid}/my-applications`} tag={Link}>
                         My Applicaitons
                       </DropdownItem>
                       <DropdownItem to="/register-page" tag={Link}>

@@ -12,6 +12,7 @@ import JobPosting from 'Components/home/JobPosting';
 import EditProfile from 'Components/EditProfile';
 import JobInfo from 'Components/JobInfo';
 import AboutUs from 'Components/AboutUs';
+import MyApplications from 'Components/MyApplications';
 
 function App() {
   return (
@@ -24,12 +25,13 @@ function App() {
             <Route path="/signup/recruiters" component={SignupRecruiters} />
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            <Route exact path="/profile/:userId" component={Profile} />
             <Route path="/new-job" component={JobPosting} />
             <PrivateRoute path="/profile/:userId/edit" component={EditProfile} />
             {/*add appropriate path for jobInfo and about us*/}
-            <Route path = "/:jobId" component = {JobInfo}/>
             <Route path ='/about-us' component = {AboutUs}/>
+            <Route exact path = "/:jobId" component = {JobInfo}/>
+            <Route exact path ='/profile/:userID/my-applications' component = {MyApplications}/>
+            <Route exact path="/profile/:userId" component={Profile} />
              {/*<Route path="/home" component={Home} /> remove when done
             <Route path="/home" component={Landing} />  remove when done */}
 

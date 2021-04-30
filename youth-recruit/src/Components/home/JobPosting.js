@@ -72,6 +72,11 @@ export default function JobPosting() {
                         active: [...user.applications.active, job.id]
                     }
                 }, {merge: true})
+
+                const jobRef = database.collection("jobs").doc(job.id)
+                jobRef.set({
+                  id: job.id
+                }, {merge: true})
             }) 
             // console.log(user);
             history.push("/")

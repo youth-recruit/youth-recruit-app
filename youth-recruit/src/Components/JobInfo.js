@@ -24,8 +24,13 @@ import CardsFooter from "./Footers/CardsFooter.js";
 
 export default function JobInfo() {
   const { currentUser } = useAuth();
-  const [isRecruiter, setRecruiter] = useState(false);
+  const [user, setUser] = useState({})
+  const [isRecruiter, setRecruiter] = useState(true);
   const [job, setJob] = useState({})
+  const [saveButtonDisable, setSaveButtonDisable] = useState(false);
+  const [applyButtonDisable, setApplyButtonDisable] = useState(false);
+  const [applicants, setApplicants] = useState([])
+  const [showApplicants, setShowApplicants] = useState(false)
 
   useEffect(() => {
     const isUserRecruit = async () => {
@@ -34,11 +39,24 @@ export default function JobInfo() {
         .get()
         .then((doc) => {
           if (doc.exists) {
-            // console.log("Document data:", doc.data());
-            // console.log(doc.data().recruiter_flag);
-            setRecruiter(doc.data().recruiter_flag);
+            const data = doc.data()
+            setUser(data)
+            setRecruiter(data.recruiter_flag);
+
+            if (!data.recruiter_flag) {
+              data.applications.saved.map(application => {
+                if (application === window.location.pathname.substr(1)) {
+                  setSaveButtonDisable(true)
+                }
+              })
+            
+              data.applications.applied.map(application => {
+                if (application === window.location.pathname.substr(1)) {
+                  setApplyButtonDisable(true)
+                }
+              })
+            }
           } else {
-            // doc.data() will be undefined in this case
             console.log("No such document!");
           }
         })
@@ -47,19 +65,89 @@ export default function JobInfo() {
         });
     };
 
-    const fetchJob = async () => {
-      const id = window.location.pathname
-      // console.log(id.substr(1))
-      const docRef = database.collection("jobs").doc(id);
-      const doc = await docRef.get();
-            if (doc.exists) {
-              setJob(doc.data())
-            }
+    const getUserInfo = async (id) => {
+      const userRef = database.collection("users").doc(id)
+      const doc = await userRef.get();
+      if (doc.exists) {
+        console.log(doc.data())
+        setApplicants(elements => [...elements, doc.data()])
+        console.log(applicants)
+        // return doc.data()
+      }
+      // return null;
     }
 
-    isUserRecruit();
+    const fetchJob = async () => {
+      isUserRecruit()
+
+      
+      const id = window.location.pathname
+      const docRef = database.collection("jobs").doc(id);
+      const doc = await docRef.get();
+      if (doc.exists) {
+        const data = doc.data()
+        setJob(data)
+
+        if (data.user == currentUser.uid) {
+          setApplicants([])
+          data.applicants.map(id => {
+            console.log(id)
+            getUserInfo(id)
+            // userInfo.then(() => {
+            //   console.log("Then")
+            //   console.log()
+            // })
+            // setApplicants(elements => [...elements, userInfo])
+          })
+          setShowApplicants(true)
+        }
+      }
+    }
+
+    // isUserRecruit();
     fetchJob()
   }, []);
+
+  const handleSaveButton = (event) => {
+    event.preventDefault()
+
+    if (!saveButtonDisable) {
+      setSaveButtonDisable(true)
+      console.log("Here")
+      user.applications.saved.push(window.location.pathname.substr(1))
+      const userRef = database.collection("users").doc(currentUser.uid);
+      userRef.set({
+        applications: {
+          saved: user.applications.saved,
+          applied: user.applications.applied
+        }
+      }, {merge: true})
+    }
+  }
+
+  const handleApplyButton = (event) => {
+    event.preventDefault()
+    if (!applyButtonDisable) {
+      setApplyButtonDisable(true)
+      console.log("Here")
+      user.applications.applied.push(window.location.pathname.substr(1))
+      const userRef = database.collection("users").doc(currentUser.uid);
+      userRef.set({
+        applications: {
+          saved: user.applications.saved,
+          applied: user.applications.applied
+        }
+      }, {merge: true}).then(() => {
+
+        job.applicants.push(currentUser.uid)
+        const jobRef = database.collection("jobs").doc(window.location.pathname.substr(1));
+        jobRef.set({
+          applicants: job.applicants
+        }, {merge: true})
+      
+      })
+    }
+  }
 
   return (
     <div>
@@ -110,12 +198,27 @@ export default function JobInfo() {
                     lg="4"
                   >
                     <div className="card-profile-actions py-4 mt-lg-0">
+                    {isRecruiter && <Link to={`#`}>
+                        <Button
+                          className="float-right btn-icon"
+                          color="default"
+                          type="link"
+                          size="m"
+                        >
+                          <span className="btn-inner--icon">
+                            <i className="ni ni-briefcase-24" />
+                          </span>
+                          <span className="btn-inner--text">Edit Job</span>
+                        </Button>
+                      </Link>}
                     {!isRecruiter && <Link to={`#`}>
                         <Button
                           className="float-right btn-icon"
                           color="default"
                           type="link"
                           size="m"
+                          onClick={handleApplyButton}
+                          disabled={applyButtonDisable}
                         >
                           <span className="btn-inner--icon">
                             <i className="ni ni-briefcase-24" />
@@ -129,6 +232,8 @@ export default function JobInfo() {
                           size="m"
                           color="secondary"
                           type="link"
+                          onClick={handleSaveButton}
+                          disabled={saveButtonDisable}
                         >
                           <span className="btn-inner--icon">
                             <i className="ni ni-single-copy-04" />
@@ -171,6 +276,51 @@ export default function JobInfo() {
                           <Badge key={tag} color="info" pill className="mr-1">{tag}</Badge>
                         )
                       })}
+                      {showApplicants && (
+                        <div>
+                          <hr></hr>
+                          <h5>Applicants</h5>
+                          
+                          <div style={{display: "flex"}}>
+                          {user.recruiter_flag && applicants.map(app => (
+                            // <div key={job}>
+                              <Col lg="4">
+                                <Card className="card-lift--hover shadow border-0">
+                                    <CardBody className="py-5">
+                                    <h5 className="text-default text-uppercase">
+                                        {app.first_name} {app.last_name}
+                                    </h5>
+                                    <h6 className="text-default">
+                                        {app.title}
+                                    </h6>
+                                    <p className="description mt-3">
+                                        {app.description}
+                                    </p>
+                                    <div>
+                                        {app.skills.map(tag => (
+                                            <Badge key={tag} color="primary" pill className="mr-1">
+                                                {tag}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                    <Button
+                                        className="mt-4"
+                                        color="primary"
+                                        href={`/profile/${app.id}`}
+                                        // onClick={e => e.preventDefault()}
+                                    >
+                                        Learn more
+                                    </Button>
+                                    </CardBody>
+                                </Card>
+                                </Col>
+                            // </div>
+                          ))}
+                          </div>
+                        </div>
+                      )}
+
+
                       </div>
 
                       <hr></hr>

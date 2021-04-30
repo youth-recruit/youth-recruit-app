@@ -57,8 +57,8 @@ export default function Profile() {
         storageRef.child(`${user.CV}`).getDownloadURL()
         .then((response) => {
           console.log(response)
-          // setCVURL(response)
           setCVURL(response)
+
         })
       }
     }
