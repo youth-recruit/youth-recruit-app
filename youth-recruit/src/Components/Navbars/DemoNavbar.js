@@ -106,80 +106,29 @@ class DemoNavbar extends React.Component {
                   <NavItem>
                       <NavLink
                         className="nav-link-icon"
-                        href="#"
+                        href="/"
                         id=""
                         target="_blank"
                       >
                         <span className="nav-link-inner--text">Youth Recruit</span>
                       </NavLink>
                     </NavItem>
+                    <NavItem>
+                      <NavLink
+                        className="nav-link-icon"
+                        href="/about-us"
+                        id=""
+                        target="_blank"
+                      >
+                        <span className="nav-link-inner--text">About Us</span>
+                      </NavLink>
+                    </NavItem>
                 </Nav>
                 <Nav className="navbar-nav-hover align-items-lg-center" navbar>
-                  <UncontrolledDropdown nav>
-                    <DropdownToggle nav>
-                      <i className="ni ni-ui-04 d-lg-none mr-1" />
-                      <span className="nav-link-inner--text">About Us</span>
-                    </DropdownToggle>
-                    <DropdownMenu className="dropdown-menu-xl">
-                      <div className="dropdown-menu-inner">
-                        <Media
-                          className="d-flex align-items-center"
-                          href="https://demos.creative-tim.com/argon-design-system-react/#/documentation/overview?ref=adsr-navbar"
-                          target="_blank"
-                        >
-                          <div className="icon icon-shape bg-gradient-primary rounded-circle text-white">
-                            <i className="ni ni-air-baloon" />
-                          </div>
-                          <Media body className="ml-3">
-                            <h6 className="heading text-primary mb-md-1">
-                              Our Mission
-                            </h6>
-                            <p className="description d-none d-md-inline-block mb-0">
-                              Learn more about Youth Recruit mission and vision.
-                            </p>
-                          </Media>
-                        </Media>
-                        <Media
-                          className="d-flex align-items-center"
-                          href="https://demos.creative-tim.com/argon-design-system-react/#/documentation/colors?ref=adsr-navbar"
-                          target="_blank"
-                        >
-                          <div className="icon icon-shape bg-gradient-success rounded-circle text-white">
-                            <i className="ni ni-single-02" />
-                          </div>
-                          <Media body className="ml-3">
-                            <h6 className="heading text-primary mb-md-1">
-                              Our Team
-                            </h6>
-                            <p className="description d-none d-md-inline-block mb-0">
-                              Learn more about Youth Recruit Team.
-                            </p>
-                          </Media>
-                        </Media>
-                        <Media
-                          className="d-flex align-items-center"
-                          href="https://demos.creative-tim.com/argon-design-system-react/#/documentation/alert?ref=adsr-navbar"
-                          target="_blank"
-                        >
-                          <div className="icon icon-shape bg-gradient-warning rounded-circle text-white">
-                            <i className="ni ni-email-83" />
-                          </div>
-                          <Media body className="ml-3">
-                            <h5 className="heading text-warning mb-md-1">
-                              Contact Us
-                            </h5>
-                            <p className="description d-none d-md-inline-block mb-0">
-                              Reach out to our support team.
-                            </p>
-                          </Media>
-                        </Media>
-                      </div>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
                   <NavItem>
                     <NavLink
                       className="nav-link-icon"
-                      href="#"
+                      href="/"
                       id=""
                       target="_blank"
                     >
