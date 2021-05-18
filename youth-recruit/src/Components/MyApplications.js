@@ -123,7 +123,7 @@ export default function MyApplications() {
                               <th>Job Title</th>
                               <th>Company</th>
                               <th>Job Description</th>
-                              <th>Badges</th>
+                              <th>Status</th>
                               <th>More</th>
                             </tr>
                           </thead>
@@ -137,16 +137,13 @@ export default function MyApplications() {
                                   <td>{job.description}</td>
                                   <td>
                                     <div>
-                                      {job.tags.map((tag) => (
                                         <Badge
-                                          key={tag}
                                           color="primary"
                                           pill
                                           className="mr-1"
                                         >
-                                          {tag}
+                                          Under Review
                                         </Badge>
-                                      ))}
                                     </div>
                                   </td>
                                   <td>
@@ -169,7 +166,7 @@ export default function MyApplications() {
                               <th>Job Title</th>
                               <th>Company</th>
                               <th>Job Description</th>
-                              <th>Badges</th>
+                              <th>Deadline</th>
                               <th>more</th>
                             </tr>
                           </thead>
@@ -182,25 +179,15 @@ export default function MyApplications() {
                                   <td>{job.company}</td>
                                   <td>{job.description}</td>
                                   <td>
-                                    <div>
-                                      {job.tags.map((tag) => (
-                                        <Badge
-                                          key={tag}
-                                          color="primary"
-                                          pill
-                                          className="mr-1"
-                                        >
-                                          {tag}
-                                        </Badge>
-                                      ))}
-                                    </div>
+                                    {/*add deadline from database*/}
+                                    20/3/2021
                                   </td>
                                   <td>
                                     {" "}
                                     <a
                                       href={`/${job.id}`}
                                     >
-                                      more
+                                      Apply
                                     </a>
                                   </td>
                                 </tr>

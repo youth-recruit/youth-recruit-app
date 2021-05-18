@@ -14,6 +14,11 @@ import {
     Row,
     Col
   } from "reactstrap";
+import ReactDatetime from "react-datetime";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
 import { useHistory } from 'react-router-dom';
 import { database } from "../../firebase"
 import { useAuth } from "../context/AuthContext"
@@ -34,6 +39,7 @@ export default function JobPosting() {
     const [loading, setLoading] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [user, setUser] = useState('');
+    const [date, setDate] = useState(new Date());
     const history = useHistory();
     const { currentUser } = useAuth()
 
@@ -120,6 +126,7 @@ export default function JobPosting() {
                       <p className="mt-0">
                         Please enter all the details below for the job
                       </p>
+                      
                       <FormGroup>
                         <InputGroup className="input-group-alternative">
                           <InputGroupAddon addonType="prepend">
@@ -138,15 +145,38 @@ export default function JobPosting() {
                         <InputGroup className="input-group-alternative">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                            <i className="ni ni-fat-add" />
+                            <i className="ni ni-watch-time" />
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            placeholder="Enter the tags of the jobs seperate by commas (,) "
+                            placeholder="Job Duration"
+                            type="text"
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                            <i className="ni ni-money-coins" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="Enter Job Salary"
                             type="text"
                             innerRef={tagsRef}
                           />
                         </InputGroup>
+                      </FormGroup>
+                      <FormGroup className="mb-4">
+                        <Input
+                          className="form-control-alternative"
+                          cols="80"
+                          name="name"
+                          placeholder="Enter more about the Company..."
+                          rows="4"
+                          type="textarea"
+                        />
                       </FormGroup>
                       <FormGroup className="mb-4">
                         <Input
@@ -158,6 +188,44 @@ export default function JobPosting() {
                           type="textarea"
                           innerRef={descriptionRef}
                         />
+                      </FormGroup>
+                      <FormGroup className="mb-4">
+                        <Input
+                          className="form-control-alternative"
+                          cols="80"
+                          name="name"
+                          placeholder="Enter the Job Requirements..."
+                          rows="4"
+                          type="textarea"
+                          ref={descriptionRef}
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                            <i className="ni ni-send" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="Enter Contact details"
+                            type="text"
+                          />
+                        </InputGroup>
+                      </FormGroup>
+                      <FormGroup>
+                        <InputGroup className="input-group-alternative">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                            <i className="ni ni-fat-add" />
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            placeholder="Enter the tags of the jobs seperate by commas (,) "
+                            type="text"
+                            ref={tagsRef}
+                          />
+                        </InputGroup>
                       </FormGroup>
                       <div>
                         <Button
