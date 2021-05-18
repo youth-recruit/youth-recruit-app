@@ -116,6 +116,7 @@ export default function JobPosting() {
                   <span />
                   <span />
                 </div>
+                <h1>This is not yet fully implemented.</h1>
                 <Container className="py-lg-md d-flex">
                   <div className="col px-0">
                     <Row className ="justify-content-center">
