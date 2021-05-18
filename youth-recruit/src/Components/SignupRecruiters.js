@@ -32,7 +32,7 @@ export default function Signup() {
             await signup(emailRef.current.value, passwordRef.current.value)
             .then(userAuth => {
                 database.collection('users').doc(userAuth.user.uid).set({
-                    id: userAuth.user.id,
+                    id: userAuth.user.uid,
                     first_name: firstNameRef.current.value,
                     last_name: lastNameRef.current.value,
                     phone: phoneRef.current.value,

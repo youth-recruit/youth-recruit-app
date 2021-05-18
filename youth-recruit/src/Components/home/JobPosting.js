@@ -52,18 +52,22 @@ export default function JobPosting() {
     
     function handleSubmit(e) {
         e.preventDefault();
+        console.log("sumbit")
 
         try {
-            setError("");
-            setLoading(true);
+            // setError("");
+            // setLoading(true);
+            console.log(titleRef.current.value)
             database.collection('jobs').add({
-                title: titleRef.current.value,
-                description: descriptionRef.current.value,
-                tags: tagsRef.current.value.match(/\w+/g),
-                company: user.company.name,
-                user: currentUser.uid
+              title: titleRef.current.value,
+              description: descriptionRef.current.value,
+              tags: tagsRef.current.value.match(/\w+/g),
+              company: user.company.name,
+              user: currentUser.uid,
+              applicants: []
             })
             .then(job => {
+              console.log("Try")
                 const userRef = database.collection("users").doc(currentUser.uid);
     
                 userRef.set({
@@ -72,13 +76,13 @@ export default function JobPosting() {
                         active: [...user.applications.active, job.id]
                     }
                 }, {merge: true})
-
+                console.log("Adding")
                 const jobRef = database.collection("jobs").doc(job.id)
                 jobRef.set({
                   id: job.id
                 }, {merge: true})
             }) 
-            // console.log(user);
+            console.log(user);
             history.push("/")
         } catch {
             setError("Failed to create a post");
@@ -126,7 +130,7 @@ export default function JobPosting() {
                           <Input
                             placeholder="Enter Job Title"
                             type="text"
-                            ref={titleRef}
+                            innerRef={titleRef}
                           />
                         </InputGroup>
                       </FormGroup>
@@ -140,7 +144,7 @@ export default function JobPosting() {
                           <Input
                             placeholder="Enter the tags of the jobs seperate by commas (,) "
                             type="text"
-                            ref={tagsRef}
+                            innerRef={tagsRef}
                           />
                         </InputGroup>
                       </FormGroup>
@@ -152,7 +156,7 @@ export default function JobPosting() {
                           placeholder="Enter the Job Description..."
                           rows="4"
                           type="textarea"
-                          ref={descriptionRef}
+                          innerRef={descriptionRef}
                         />
                       </FormGroup>
                       <div>

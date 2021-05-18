@@ -31,40 +31,42 @@ export default function Signup() {
             setError("");
             setLoading(true);
             await signup(emailRef.current.value, passwordRef.current.value)
-                .then(userAuth => {
-                    database.collection('users').doc(userAuth.user.uid).set({
-                        id: userAuth.user.id,
-                        first_name: firstNameRef.current.value,
-                        last_name: lastNameRef.current.value,
-                        gender: userGender,
-                        age: 0,
-                        phone: phoneRef.current.value,
-                        email: emailRef.current.value,
-                        security: {
-                            question: questionRef.current.value,
-                            answer: answerRef.current.value
-                        },
-                        recruiter_flag: false,
-                        applications: {
-                            applied: [],
-                            saved: []
-                        },
-                        title: "",
-                        description: "",
-                        university: "",
-                        education: [],
-                        awards: [],
-                        exeriences: [],
-                        languages: [],
-                        courses: [],
-                        location: {
-                            city: "",
-                            country: ""
-                        },
-                        skills: [],
-                        CV: ""
-                    })
+            .then(userAuth => {
+                console.log(userAuth.user.uid)
+                database.collection('users').doc(userAuth.user.uid).set({
+                    id: userAuth.user.uid,
+                    first_name: firstNameRef.current.value,
+                    last_name: lastNameRef.current.value,
+                    gender: userGender,
+                    age: 0,
+                    phone: phoneRef.current.value,
+                    email: emailRef.current.value,
+                    security: {
+                        question: questionRef.current.value,
+                        answer: answerRef.current.value
+                    },
+                    recruiter_flag: false,
+                    applications: {
+                        applied: [],
+                        saved: []
+                    },
+                    title: "",
+                    description: "",
+                    university: "",
+                    education: [],
+                    awards: [],
+                    experiences: [],
+                    languages: [],
+                    courses: [],
+                    location: {
+                        city: "",
+                        country: ""
+                    },
+                    skills: [],
+                    CV: ""
                 })
+                console.log("--------------------------------------")
+            })
             // console.log(user);
             history.push("/")
         } catch {
